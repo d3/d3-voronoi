@@ -6,8 +6,8 @@ Voronoi layouts are particularly useful for invisible interactive regions, as de
 
 <a href="http://bl.ocks.org/mbostock/4060366"><img src="http://bl.ocks.org/mbostock/raw/4060366/thumbnail.png" width="202"></a>
 <a href="http://bl.ocks.org/mbostock/4341156"><img src="http://bl.ocks.org/mbostock/raw/4341156/thumbnail.png" width="202"></a>
-<a href="http://bl.ocks.org/mbostock/1073373"><img src="http://bl.ocks.org/mbostock/raw/1073373/thumbnail.png" width="202"></a>
 <a href="http://bl.ocks.org/mbostock/4237768"><img src="http://bl.ocks.org/mbostock/raw/4237768/thumbnail.png" width="202"></a>
+<a href="http://bl.ocks.org/mbostock/1073373"><img src="http://bl.ocks.org/mbostock/raw/1073373/thumbnail.png" width="202"></a>
 
 ## Installing
 
