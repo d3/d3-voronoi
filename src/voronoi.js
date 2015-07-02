@@ -1,8 +1,9 @@
+import RedBlackTree from "./RedBlackTree";
+import {addBeach, removeBeach} from "./Beach";
 import {clipEdges} from "./Edge";
 import {closeCells} from "./Cell";
-import {addBeach, removeBeach} from "./Beach";
+import {descendingAngle} from "./HalfEdge";
 import {firstCircle} from "./Circle";
-import RedBlackTree from "./RedBlackTree";
 
 var nullExtent = [[-1e6, -1e6], [1e6, 1e6]];
 
@@ -128,7 +129,7 @@ export default function() {
 
     computeVoronoi(points(data)).cells.forEach(function(cell, i) {
       var site = cell.site,
-          edges = cell.edges.sort(halfEdgeOrder),
+          edges = cell.edges.sort(descendingAngle),
           j = -1,
           m = edges.length,
           e0,

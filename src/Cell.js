@@ -1,4 +1,4 @@
-import {createHalfEdge} from "./HalfEdge";
+import {createHalfEdge, descendingAngle} from "./HalfEdge";
 import {createBorderEdge} from "./Edge";
 import {cells, epsilon} from "./voronoi";
 
@@ -20,10 +20,6 @@ Cell.prototype.prepare = function() {
   halfEdges.sort(descendingAngle);
   return halfEdges.length;
 };
-
-function descendingAngle(a, b) {
-  return b.angle - a.angle;
-}
 
 export function createCell(site) {
   return cells[site.i] = new Cell(site);

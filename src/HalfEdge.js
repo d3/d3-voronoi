@@ -16,3 +16,7 @@ export function createHalfEdge(edge, lSite, rSite) {
       : edge.l === lSite ? Math.atan2(vb.x - va.x, va.y - vb.y)
       : Math.atan2(va.x - vb.x, vb.y - va.y));
 };
+
+export function descendingAngle(a, b) {
+  return b.angle - a.angle;
+};
