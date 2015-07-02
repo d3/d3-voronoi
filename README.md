@@ -1,6 +1,6 @@
 # d3-voronoi
 
-This module implements Steven J. Fortune’s algorithm for computing the Voronoi diagram (and its dual, the Delaunay triangulation) of a set of two-dimensional points. This work is largely based on [Raymond Hill’s previous implementation](https://github.com/gorhill/Javascript-Voronoi).
+This module implements [Steven J. Fortune’s algorithm](https://en.wikipedia.org/wiki/Fortune's_algorithm) for computing the [Voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram) or [Delaunay triangulation](https://en.wikipedia.org/wiki/Delaunay_triangulation) of a set of two-dimensional points. This implementation is largely based on [work by Raymond Hill](http://www.raymondhill.net/voronoi/rhill-voronoi.html).
 
 Voronoi diagrams are [visually](http://bl.ocks.org/mbostock/4360892) [attractive](http://bl.ocks.org/mbostock/4636377) but they are also extremely useful for improving interaction in visualization by increasing the target area of visual elements such as dots in a scatterplot. (See [“Strikeouts On The Rise”](http://www.nytimes.com/interactive/2013/03/29/sports/baseball/Strikeouts-Are-Still-Soaring.html) in *The New York Times* and this [multi-line-chart](http://bl.ocks.org/mbostock/8033015) for examples; also see Tovi Grossman’s paper on [bubble cursors](http://www.tovigrossman.com/BubbleCursor) for a related technique.) Voronoi diagrams can also be used to [automate label positioning](http://bl.ocks.org/mbostock/6909318).
 
@@ -64,14 +64,14 @@ An alias for [*voronoi*.extent](#voronoi_extent) where the minimum *x* and *y* o
 
 <a name="voronoi_links" href="#voronoi_links">#</a> <i>voronoi</i>.<b>links</b>(<i>data</i>)
 
-Returns the [Delaunay triangulation](https://en.wikipedia.org/wiki/Delaunay_triangulation) of the specified *data* array as an array of links. Each link has the following attributes:
+Returns the Delaunay triangulation of the specified *data* array as an array of links. Each link has the following attributes:
 
 * `source` - the source node, an element in *data*.
 * `target` - the target node, an element in *data*.
 
 <a name="voronoi_triangles" href="#voronoi_triangles">#</a> <i>voronoi</i>.<b>triangles</b>(<i>data</i>)
 
-Returns the [Delaunay triangulation](https://en.wikipedia.org/wiki/Delaunay_triangulation) of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*.
+Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*.
 
 ## Changes from D3 3.x:
 
