@@ -1,10 +1,13 @@
 # d3-voronoi
 
-An implementation of Steven J. Fortune’s algorithm to compute the Voronoi diagram of a set of two-dimensional points, largely based on [Raymond Hill’s implementation](https://github.com/gorhill/Javascript-Voronoi). Also implements the dual Delaunay triangulation and Delaunay mesh. Voronoi layouts are particularly useful for invisible interactive regions, as demonstrated in Nate Vack’s [Voronoi picking](http://bl.ocks.org/njvack/1405439) example. See Tovi Grossman’s paper on [bubble cursors](http://www.tovigrossman.com/BubbleCursor) for a related concept.
+This module implements Steven J. Fortune’s algorithm for computing the Voronoi diagram of a set of two-dimensional points, largely based on [Raymond Hill’s previous implementation](https://github.com/gorhill/Javascript-Voronoi). Voronoi diagrams are particularly useful for improving interaction in visualization by increasing the target area of visual elements such as dots in a scatterplot. (See [“Strikeouts On The Rise”](http://www.nytimes.com/interactive/2013/03/29/sports/baseball/Strikeouts-Are-Still-Soaring.html) in *The New York Times* and Nate Vack’s [Voronoi picking](http://bl.ocks.org/njvack/1405439) for examples; also see Tovi Grossman’s paper on [bubble cursors](http://www.tovigrossman.com/BubbleCursor).)
 
 <a href="http://bl.ocks.org/mbostock/4060366"><img src="http://bl.ocks.org/mbostock/raw/4060366/thumbnail.png" width="202"></a>
-<a href="http://bl.ocks.org/mbostock/4341156"><img src="http://bl.ocks.org/mbostock/raw/4341156/thumbnail.png" width="202"></a>
 <a href="http://bl.ocks.org/mbostock/4237768"><img src="http://bl.ocks.org/mbostock/raw/4237768/thumbnail.png" width="202"></a>
+
+This implementation also computes the dual of the Voronoi diagrams: the Delaunay triangulation and mesh.
+
+<a href="http://bl.ocks.org/mbostock/4341156"><img src="http://bl.ocks.org/mbostock/raw/4341156/thumbnail.png" width="202"></a>
 <a href="http://bl.ocks.org/mbostock/1073373"><img src="http://bl.ocks.org/mbostock/raw/1073373/thumbnail.png" width="202"></a>
 
 ## Installing
