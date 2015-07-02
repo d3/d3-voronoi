@@ -1,0 +1,33 @@
+{
+  "name": "d3-voronoi",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    "d3",
+    "voronoi",
+    "delaunay"
+  ],
+  "homepage": "https://github.com/d3/d3-voronoi",
+  "license": "BSD-3-Clause",
+  "author": {
+    "name": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike"
+  },
+  "main": "build/voronoi",
+  "jsnext:main": "index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d3/d3-voronoi.git"
+  },
+  "scripts": {
+    "pretest": "mkdir -p build && d3-bundler --format=umd --name=voronoi -- index.js > build/voronoi.js",
+    "test": "faucet `find test -name '*-test.js'`",
+    "prepublish": "npm run test && uglifyjs build/voronoi.js -c -m -o build/voronoi.min.js && rm -f build/voronoi.zip && zip -j build/voronoi.zip -- LICENSE README.md build/voronoi.js build/voronoi.min.js"
+  },
+  "devDependencies": {
+    "d3-bundler": "~0.2.5",
+    "faucet": "0.0",
+    "tape": "4",
+    "uglify-js": "2"
+  }
+}
