@@ -1,6 +1,6 @@
 # d3-voronoi
 
-An implementation of Steven J. Fortune’s algorithm to compute the Voronoi diagram of a set of two-dimensional points. Can also compute the dual Delaunay triangulation and Delaunay mesh.
+An implementation of Steven J. Fortune’s algorithm to compute the Voronoi diagram of a set of two-dimensional points, largely based on [Raymond Hill’s implementation](https://github.com/gorhill/Javascript-Voronoi). Also implements the dual Delaunay triangulation and Delaunay mesh.
 
 ## Installing
 
