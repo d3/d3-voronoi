@@ -1,8 +1,6 @@
 # d3-voronoi
 
-An implementation of Steven J. Fortune’s algorithm to compute the Voronoi diagram of a set of two-dimensional points, largely based on [Raymond Hill’s implementation](https://github.com/gorhill/Javascript-Voronoi). Also implements the dual Delaunay triangulation and Delaunay mesh.
-
-Voronoi layouts are particularly useful for invisible interactive regions, as demonstrated in Nate Vack’s [Voronoi picking](http://bl.ocks.org/njvack/1405439) example. See Tovi Grossman’s paper on [bubble cursors](http://www.tovigrossman.com/BubbleCursor) for a related concept.
+An implementation of Steven J. Fortune’s algorithm to compute the Voronoi diagram of a set of two-dimensional points, largely based on [Raymond Hill’s implementation](https://github.com/gorhill/Javascript-Voronoi). Also implements the dual Delaunay triangulation and Delaunay mesh. Voronoi layouts are particularly useful for invisible interactive regions, as demonstrated in Nate Vack’s [Voronoi picking](http://bl.ocks.org/njvack/1405439) example. See Tovi Grossman’s paper on [bubble cursors](http://www.tovigrossman.com/BubbleCursor) for a related concept.
 
 <a href="http://bl.ocks.org/mbostock/4060366"><img src="http://bl.ocks.org/mbostock/raw/4060366/thumbnail.png" width="202"></a>
 <a href="http://bl.ocks.org/mbostock/4341156"><img src="http://bl.ocks.org/mbostock/raw/4341156/thumbnail.png" width="202"></a>
@@ -77,3 +75,5 @@ Returns the <a href="https://en.wikipedia.org/wiki/Delaunay_triangulation">Delau
 * Removed deprecated constructor.
 
 * Removed deprecated delaunay constructor; use voronoi.triangles instead.
+
+* Renamed *voronoi*.clipExtent to [*voronoi*.extent](#voronoi_extent).
