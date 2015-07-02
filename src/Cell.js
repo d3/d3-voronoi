@@ -1,4 +1,4 @@
-import HalfEdge from "./HalfEdge";
+import {createHalfEdge} from "./HalfEdge";
 import {createBorderEdge} from "./Edge";
 import {cells, epsilon} from "./voronoi";
 
@@ -25,6 +25,10 @@ function descendingAngle(a, b) {
   return b.angle - a.angle;
 }
 
+export function createCell(site) {
+  return cells[site.i] = new Cell(site);
+};
+
 export function closeCells(x0, y0, x1, y1) {
   var x2,
       y2,
@@ -48,7 +52,7 @@ export function closeCells(x0, y0, x1, y1) {
       end = halfEdges[iHalfEdge].end(), x3 = end.x, y3 = end.y;
       start = halfEdges[++iHalfEdge % nHalfEdges].start(), x2 = start.x, y2 = start.y;
       if (Math.abs(x3 - x2) > epsilon || Math.abs(y3 - y2) > epsilon) {
-        halfEdges.splice(iHalfEdge, 0, new HalfEdge(createBorderEdge(cell.site, end,
+        halfEdges.splice(iHalfEdge, 0, createHalfEdge(createBorderEdge(cell.site, end,
             Math.abs(x3 - x0) < epsilon && y1 - y3 > epsilon ? {x: x0, y: Math.abs(x2 - x0) < epsilon ? y2 : y1}
             : Math.abs(y3 - y1) < epsilon && x1 - x3 > epsilon ? {x: Math.abs(y2 - y1) < epsilon ? x2 : x1, y: y1}
             : Math.abs(x3 - x1) < epsilon && y3 - y0 > epsilon ? {x: x1, y: Math.abs(x2 - x1) < epsilon ? y2 : y0}
@@ -59,5 +63,3 @@ export function closeCells(x0, y0, x1, y1) {
     }
   }
 };
-
-export default Cell;

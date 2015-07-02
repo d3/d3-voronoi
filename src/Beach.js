@@ -1,7 +1,8 @@
 import {RedBlackNode} from "./RedBlackTree";
+import {createCell} from "./Cell";
 import {attachCircle, detachCircle} from "./Circle";
 import {createEdge, setEdgeEnd} from "./Edge";
-import {beaches, epsilon} from "./voronoi";
+import {beaches, cells, epsilon} from "./voronoi";
 
 var beachPool = [];
 
@@ -112,6 +113,7 @@ export function addBeach(site) {
     }
   }
 
+  createCell(site);
   var newArc = createBeach(site);
   beaches.insert(lArc, newArc);
 

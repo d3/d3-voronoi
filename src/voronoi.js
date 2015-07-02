@@ -1,5 +1,5 @@
 import {clipEdges} from "./Edge";
-import {default as Cell, closeCells} from "./Cell";
+import {closeCells} from "./Cell";
 import {addBeach, removeBeach} from "./Beach";
 import {firstCircle} from "./Circle";
 import RedBlackTree from "./RedBlackTree";
@@ -51,7 +51,6 @@ function computeVoronoi(sites, extent) {
     circle = firstCircle;
     if (site && (!circle || site.y < circle.y || (site.y === circle.y && site.x < circle.x))) {
       if (site.x !== x0 || site.y !== y0) {
-        cells[site.i] = new Cell(site);
         addBeach(site);
         x0 = site.x, y0 = site.y;
       }

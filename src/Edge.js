@@ -1,4 +1,4 @@
-import HalfEdge from "./HalfEdge";
+import {createHalfEdge} from "./HalfEdge";
 import {cells, edges, epsilon} from "./voronoi";
 
 function Edge(lSite, rSite) {
@@ -12,8 +12,8 @@ export function createEdge(lSite, rSite, va, vb) {
   edges.push(edge);
   if (va) setEdgeEnd(edge, lSite, rSite, va);
   if (vb) setEdgeEnd(edge, rSite, lSite, vb);
-  cells[lSite.i].edges.push(new HalfEdge(edge, lSite, rSite));
-  cells[rSite.i].edges.push(new HalfEdge(edge, rSite, lSite));
+  cells[lSite.i].edges.push(createHalfEdge(edge, lSite, rSite));
+  cells[rSite.i].edges.push(createHalfEdge(edge, rSite, lSite));
   return edge;
 };
 
@@ -171,5 +171,3 @@ export function clipEdges(x0, y0, x1, y1) {
     }
   }
 };
-
-export default Edge;
