@@ -1,5 +1,1 @@
-import voronoi from "./src/voronoi";
-
-export {
-  voronoi
-};
+export {default as voronoi} from "./src/voronoi";
