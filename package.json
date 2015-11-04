@@ -1,6 +1,6 @@
 {
   "name": "d3-voronoi",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Compute the Voronoi diagram of a set of two-dimensional points.",
   "keywords": [
     "d3",
@@ -13,19 +13,19 @@
     "name": "Mike Bostock",
     "url": "http://bost.ocks.org/mike"
   },
-  "main": "build/voronoi",
+  "main": "build/voronoi.cjs",
   "jsnext:main": "index",
   "repository": {
     "type": "git",
     "url": "https://github.com/d3/d3-voronoi.git"
   },
   "scripts": {
-    "pretest": "mkdir -p build && d3-bundler --format=umd --name=voronoi -- index.js > build/voronoi.js",
+    "pretest": "mkdir -p build && d3-bundler -x -f cjs -o build/voronoi.cjs.js",
     "test": "faucet `find test -name '*-test.js'`",
-    "prepublish": "npm run test && uglifyjs build/voronoi.js -c -m -o build/voronoi.min.js && rm -f build/voronoi.zip && zip -j build/voronoi.zip -- LICENSE README.md build/voronoi.js build/voronoi.min.js"
+    "prepublish": "npm run test && d3-bundler -n voronoi -o build/voronoi.js && uglifyjs build/voronoi.js -c -m -o build/voronoi.min.js && rm -f build/voronoi.zip && zip -j build/voronoi.zip -- LICENSE README.md build/voronoi.js build/voronoi.min.js"
   },
   "devDependencies": {
-    "d3-bundler": "~0.2.5",
+    "d3-bundler": "~0.4.0",
     "faucet": "0.0",
     "tape": "4",
     "uglify-js": "2"
