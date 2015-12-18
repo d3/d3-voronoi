@@ -16,11 +16,17 @@ Voronoi diagrams are not only [visually](http://bl.ocks.org/mbostock/4360892) [a
 
 ## Installing
 
-If you use NPM, `npm install d3-voronoi`. Otherwise, download the [latest release](https://github.com/d3/d3-voronoi/releases/latest).
+If you use NPM, `npm install d3-voronoi`. Otherwise, download the [latest release](https://github.com/d3/d3-voronoi/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a custom build using [Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3js.org](https://d3js.org):
+
+```html
+<script src="https://d3js.org/d3-voronoi.v0.1.min.js"></script>
+```
+
+In a vanilla environment, a `d3_voronoi` global is exported. [Try d3-voronoi in your browser.](https://tonicdev.com/npm/d3-voronoi)
 
 ## API Reference
 
-<a name="voronoi" href="#voronoi">#</a> <b>voronoi</b>()
+<a name="voronoi" href="#voronoi">#</a> d3_voronoi.<b>voronoi</b>()
 
 Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi_y)accessors and the default [extent](#voronoi_extent).
 
@@ -72,11 +78,3 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 <a name="voronoi_triangles" href="#voronoi_triangles">#</a> <i>voronoi</i>.<b>triangles</b>(<i>data</i>)
 
 Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*.
-
-## Changes from D3 3.x:
-
-* Removed deprecated constructor.
-
-* Removed deprecated delaunay constructor; use voronoi.triangles instead.
-
-* Renamed *voronoi*.clipExtent to [*voronoi*.extent](#voronoi_extent).
