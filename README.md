@@ -26,7 +26,7 @@ In a vanilla environment, a `d3_voronoi` global is exported. [Try d3-voronoi in 
 
 ## API Reference
 
-<a name="voronoi" href="#voronoi">#</a> d3_voronoi.<b>voronoi</b>()
+<a name="voronoi" href="#voronoi">#</a> d3.<b>voronoi</b>()
 
 Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi_y)accessors and the default [extent](#voronoi_extent).
 
