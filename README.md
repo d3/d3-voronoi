@@ -32,9 +32,7 @@ Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi
 
 <a name="_voronoi" href="#_voronoi">#</a> <i>voronoi</i>(<i>points</i>)
 
-Computes the Voronoi diagram for the specified *points*. See [voronoi diagrams](#voronoi-diagrams) for details on the returned data structure.
-
-Note: if any points are coincident or have NaN positions, **the behavior of this method is undefined.** Most likely, invalid polygons will be returned! You must filter invalid points and consolidate coincident points before computing the Voronoi diagram.
+Computes the Voronoi diagram for the specified *points*. See [voronoi diagrams](#voronoi-diagrams) for details on the returned data structure. Warning: if any points are coincident or have NaN positions, **the behavior of this method is undefined.** Most likely, invalid polygons will be returned! You must filter invalid points and consolidate coincident points before computing the Voronoi diagram.
 
 <a name="voronoi_x" href="#voronoi_x">#</a> <i>voronoi</i>.<b>x</b>([<i>x</i>])
 
