@@ -7,8 +7,8 @@ function Cell(site) {
   this.edges = [];
 }
 
-Cell.prototype.prepare = function() {
-  var halfEdges = this.edges,
+function prepareCell(cell) {
+  var halfEdges = cell.edges,
       iHalfEdge = halfEdges.length,
       edge;
 
@@ -19,7 +19,7 @@ Cell.prototype.prepare = function() {
 
   halfEdges.sort(descendingAngle);
   return halfEdges.length;
-};
+}
 
 export function createCell(site) {
   return cells[site.i] = new Cell(site);
@@ -40,7 +40,7 @@ export function closeCells(x0, y0, x1, y1) {
 
   while (iCell--) {
     cell = cells[iCell];
-    if (!cell || !cell.prepare()) continue;
+    if (!cell || !prepareCell(cell)) continue;
     halfEdges = cell.edges;
     nHalfEdges = halfEdges.length;
     iHalfEdge = 0;

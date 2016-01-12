@@ -95,10 +95,6 @@ TODO Clean this up!
 * `site` - the [site](#site) of the cell’s associated input point
 * `edges` - an array of [halfedges](#halfedge) representing the cell’s polygon
 
-<a name="cell_prepare" href="#cell_prepare">#</a> <i>cell</i>.<b>prepare</b>()
-
-… TODO remove this
-
 <a name="site" href="#site">#</a> <i>site</i>
 
 * `x` - an *x*-coordinate
@@ -113,11 +109,23 @@ TODO Clean this up!
 
 <a name="halfedge_start" href="#halfedge">#</a> <i>halfedge</i>.<b>start</b>()
 
-…
+Returns the start [vertex](#vertex) of this halfedge. Halfedges always proceed counterclockwise, so this is defined as:
+
+```js
+function start() {
+  return this.edge.l === this.site ? this.edge.a : this.edge.b;
+}
+```
 
 <a name="halfedge_end" href="#halfedge">#</a> <i>halfedge</i>.<b>end</b>()
 
-…
+Returns the end [vertex](#vertex) of this halfedge. Halfedges always proceed counterclockwise, so this is defined as:
+
+```js
+function end() {
+  return this.edge.l === this.site ? this.edge.b : this.edge.a;
+}
+```
 
 <a name="edge" href="#edge">#</a> <i>edge</i>
 
