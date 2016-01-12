@@ -2,7 +2,7 @@ import RedBlackTree from "./RedBlackTree";
 import {addBeach, removeBeach} from "./Beach";
 import {clipEdges} from "./Edge";
 import {closeCells} from "./Cell";
-import {descendingAngle} from "./HalfEdge";
+import {descendingAngle} from "./Halfedge";
 import {firstCircle} from "./Circle";
 
 var nullExtent = [[-1e6, -1e6], [1e6, 1e6]];
@@ -107,9 +107,9 @@ export default function() {
         y1 = box[1][1];
 
     computeVoronoi(sites(data), box).cells.forEach(function(cell, i) {
-      var edges = cell.edges,
+      var halfedges = cell.halfedges,
           site = cell.site,
-          polygon = polygons[i] = edges.length ? edges.map(function(e) { var s = e.start(); return [s.x, s.y]; })
+          polygon = polygons[i] = halfedges.length ? halfedges.map(function(e) { var s = e.start(); return [s.x, s.y]; })
               : site.x >= x0 && site.x <= x1 && site.y >= y0 && site.y <= y1 ? [[x0, y1], [x1, y1], [x1, y0], [x0, y0]]
               : [];
       polygon.point = data[i];
@@ -134,18 +134,18 @@ export default function() {
 
     computeVoronoi(sites(data)).cells.forEach(function(cell, i) {
       var site = cell.site,
-          edges = cell.edges.sort(descendingAngle),
+          halfedges = cell.halfedges.sort(descendingAngle),
           j = -1,
-          m = edges.length,
+          m = halfedges.length,
           e0,
           s0,
-          e1 = edges[m - 1].edge,
+          e1 = halfedges[m - 1].edge,
           s1 = e1.l === site ? e1.r : e1.l;
 
       while (++j < m) {
         e0 = e1;
         s0 = s1;
-        e1 = edges[j].edge;
+        e1 = halfedges[j].edge;
         s1 = e1.l === site ? e1.r : e1.l;
         if (i < s0.i && i < s1.i && triangleArea(site, s0, s1) < 0) {
           triangles.push([data[i], data[s0.i], data[s1.i]]);

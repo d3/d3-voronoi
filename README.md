@@ -93,7 +93,7 @@ TODO Clean this up!
 <a name="cell" href="#cell">#</a> <i>cell</i>
 
 * `site` - the [site](#site) of the cell’s associated input point
-* `edges` - an array of [halfedges](#halfedge) representing the cell’s polygon
+* `halfedges` - an array of [halfedges](#halfedge) representing the cell’s polygon
 
 <a name="site" href="#site">#</a> <i>site</i>
 

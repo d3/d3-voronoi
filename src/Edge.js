@@ -1,4 +1,4 @@
-import {createHalfEdge} from "./HalfEdge";
+import {createHalfedge} from "./Halfedge";
 import {cells, edges, epsilon} from "./voronoi";
 
 function Edge(lSite, rSite) {
@@ -12,8 +12,8 @@ export function createEdge(lSite, rSite, va, vb) {
   edges.push(edge);
   if (va) setEdgeEnd(edge, lSite, rSite, va);
   if (vb) setEdgeEnd(edge, rSite, lSite, vb);
-  cells[lSite.i].edges.push(createHalfEdge(edge, lSite, rSite));
-  cells[rSite.i].edges.push(createHalfEdge(edge, rSite, lSite));
+  cells[lSite.i].halfedges.push(createHalfedge(edge, lSite, rSite));
+  cells[rSite.i].halfedges.push(createHalfedge(edge, rSite, lSite));
   return edge;
 };
 
