@@ -30,11 +30,9 @@ In a vanilla environment, a `d3_voronoi` global is exported. [Try d3-voronoi in 
 
 Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi_y)accessors and the default [extent](#voronoi_extent).
 
-<a name="_voronoi" href="#_voronoi">#</a> <i>voronoi</i>(<i>data</i>)
+<a name="_voronoi" href="#_voronoi">#</a> <i>voronoi</i>(<i>points</i>)
 
-Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. For each element *i* in *data*, the polygon *i* represents the corresponding cell in the computed Voronoi diagram.
-
-Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `point` field that refers to the corresponding element in *data*. Polygons are *open* in that they do not contain closing points that duplicate the initial point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
+Computes the Voronoi diagram for the specified *points*. See [voronoi diagrams](#voronoi-diagrams) for details on the returned data structure.
 
 Note: if any points are coincident or have NaN positions, **the behavior of this method is undefined.** Most likely, invalid polygons will be returned! You must filter invalid points and consolidate coincident points before computing the Voronoi diagram.
 
@@ -60,13 +58,19 @@ function y(d) {
 
 <a name="voronoi_extent" href="#voronoi_extent">#</a> <i>voronoi</i>.<b>extent</b>([<i>extent</i>])
 
-If *extent* is specified, sets the clip extent of the Voronoi layout to the specified bounds and returns the layout. The *extent* bounds are specified as an array [​[<i>x0</i>, <i>y0</i>], [<i>x1</i>, <i>y1</i>]​], where <i>x0</i> is the left side of the extent, <i>y0</i> is the top, <i>x1</i> is the right and <i>y1</i> is the bottom. If *extent* is null, no clipping is performed. If *extent* is not specified, returns the current clip extent which defaults to null.
+If *extent* is specified, sets the clip extent of the Voronoi layout to the specified bounds and returns the layout. The *extent* bounds are specified as an array [​[<i>x0</i>, <i>y0</i>], [<i>x1</i>, <i>y1</i>]​], where <i>x0</i> is the left side of the extent, <i>y0</i> is the top, <i>x1</i> is the right and <i>y1</i> is the bottom. If *extent* is not specified, returns the current clip extent which defaults to null.
 
-Use of a clip extent is strongly recommended in conjunction with [*voronoi*](#_voronoi), as unclipped polygons may have large coordinates which may not render correctly.
+If the extent is null, no clipping is performed when the Voronoi diagram is generated. A clip extent is strongly recommended in conjunction with [*voronoi*.cells](#voronoi_cells), as unclipped polygons may have large coordinates which may not render correctly.
 
 <a name="voronoi_size" href="#voronoi_size">#</a> <i>voronoi</i>.<b>size</b>([<i>size</i>])
 
 An alias for [*voronoi*.extent](#voronoi_extent) where the minimum *x* and *y* of the extent are ⟨0,0⟩. Given a Voronoi layout `v`, this is equivalent to `v.extent([[0, 0], size])`.
+
+<a name="voronoi_cells" href="#voronoi_cells">#</a> <i>voronoi</i>.<b>cells</b>(<i>data</i>[, <i>extent</i>])
+
+Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. For each element *i* in *data*, the polygon *i* represents the corresponding cell in the computed Voronoi diagram.
+
+Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `point` field that refers to the corresponding element in *data*. Polygons are *open* in that they do not contain closing points that duplicate the initial point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
 
 <a name="voronoi_links" href="#voronoi_links">#</a> <i>voronoi</i>.<b>links</b>(<i>data</i>)
 
@@ -78,3 +82,34 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 <a name="voronoi_triangles" href="#voronoi_triangles">#</a> <i>voronoi</i>.<b>triangles</b>(<i>data</i>)
 
 Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*.
+
+### Voronoi Diagrams
+
+<a name="diagram" href="#diagram">#</a> <i>diagram</i>
+
+* `cells` - an array of [cells](#diagram_cell), one per input point
+* `edges` - an array of [edges](#diagram_edge)
+
+<a name="diagram_cell" href="#diagram_cell">#</a> <i>cell</i>
+
+* `site` - the [site](#diagram_site) of the cell’s associated input point
+* `edges` - an array of [halfedges](#diagram_halfedge) representing the cell’s polygon
+
+<a name="diagram_site" href="#diagram_site">#</a> <i>site</i>
+
+* `x` - an *x*-coordinate
+* `y` - an *y*-coordinate
+* `i` - the site’s index, corresponding to the index of the associated input point
+
+<a name="diagram_halfedge" href="#diagram_halfedge">#</a> <i>halfedge</i>
+
+* `site` - the owning [site](#diagram_site)
+* `edge` - the shared [edge](#diagram_edge)
+* `angle` - the edge angle, used for ordering
+
+<a name="diagram_edge" href="#diagram_edge">#</a> <i>edge</i>
+
+* `l` - the [site](#diagram_site) on the left side of the edge
+* `r` - the [site](#diagram_site) on the right side of the edge; null if this is a border edge
+* `a` - a [vertex](#diagram_vertex) defining the start of the edge
+* `b` - a [vertex](#diagram_vertex) defining the end of the edge; null if this edge is unbounded

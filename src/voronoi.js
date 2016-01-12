@@ -39,8 +39,8 @@ function lexicographic(a, b) {
 
 function computeVoronoi(sites, extent) {
   var site = sites.sort(lexicographic).pop(),
-      x0,
-      y0,
+      x,
+      y,
       circle;
 
   edges = [];
@@ -51,9 +51,9 @@ function computeVoronoi(sites, extent) {
   while (true) {
     circle = firstCircle;
     if (site && (!circle || site.y < circle.y || (site.y === circle.y && site.x < circle.x))) {
-      if (site.x !== x0 || site.y !== y0) {
+      if (site.x !== x || site.y !== y) {
         addBeach(site);
-        x0 = site.x, y0 = site.y;
+        x = site.x, y = site.y;
       }
       site = sites.pop();
     } else if (circle) {
@@ -82,25 +82,10 @@ export default function() {
       y = pointY,
       fx = x,
       fy = y,
-      extent = nullExtent;
+      extent = null;
 
   function voronoi(data) {
-    var polygons = new Array(data.length),
-        x0 = extent[0][0],
-        y0 = extent[0][1],
-        x1 = extent[1][0],
-        y1 = extent[1][1];
-
-    computeVoronoi(points(data), extent).cells.forEach(function(cell, i) {
-      var edges = cell.edges,
-          site = cell.site,
-          polygon = polygons[i] = edges.length ? edges.map(function(e) { var s = e.start(); return [s.x, s.y]; })
-              : site.x >= x0 && site.x <= x1 && site.y >= y0 && site.y <= y1 ? [[x0, y1], [x1, y1], [x1, y0], [x0, y0]]
-              : [];
-      polygon.point = data[i];
-    });
-
-    return polygons;
+    return computeVoronoi(points(data), extent);
   }
 
   function points(data) {
@@ -112,6 +97,26 @@ export default function() {
       };
     });
   }
+
+  voronoi.cells = function(data) {
+    var polygons = new Array(data.length),
+        box = extent || nullExtent,
+        x0 = box[0][0],
+        y0 = box[0][1],
+        x1 = box[1][0],
+        y1 = box[1][1];
+
+    computeVoronoi(points(data), box).cells.forEach(function(cell, i) {
+      var edges = cell.edges,
+          site = cell.site,
+          polygon = polygons[i] = edges.length ? edges.map(function(e) { var s = e.start(); return [s.x, s.y]; })
+              : site.x >= x0 && site.x <= x1 && site.y >= y0 && site.y <= y1 ? [[x0, y1], [x1, y1], [x1, y0], [x0, y0]]
+              : [];
+      polygon.point = data[i];
+    });
+
+    return polygons;
+  };
 
   voronoi.links = function(data) {
     return computeVoronoi(points(data)).edges.filter(function(edge) {
@@ -160,14 +165,11 @@ export default function() {
   };
 
   voronoi.extent = function(_) {
-    if (!arguments.length) return extent === nullExtent ? null : extent;
-    extent = _ == null ? nullExtent : _;
-    return voronoi;
+    return arguments.length ? (extent = _ == null ? null : [[+_[0][0], +_[0][1]], [+_[1][0], +_[1][1]]], voronoi) : extent && [[extent[0][0], extent[0][1]], [extent[1][0], extent[1][1]]];
   };
 
   voronoi.size = function(_) {
-    if (!arguments.length) return extent === nullExtent ? null : extent && extent[1];
-    return voronoi.extent(_ && [[0, 0], _]);
+    return arguments.length ? (extent = _ == null ? null : [[0, 0], [+_[0], +_[1]]], voronoi) : extent && [extent[1][0], extent[1][1]];
   };
 
   return voronoi;
