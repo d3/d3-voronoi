@@ -128,8 +128,8 @@ Each edge has the following properties:
 
 * `l` - the [site](#site) on the left side of the edge
 * `r` - the [site](#site) on the right side of the edge; null if this is a border edge
-* `a` - a [vertex](#vertex) defining the start of the edge
-* `b` - a [vertex](#vertex) defining the end of the edge; null if this edge is unbounded
+* `a` - a [vertex](#vertex) defining one end of the edge
+* `b` - a [vertex](#vertex) defining the other end of the edge; null if this edge is unbounded
 
 <a name="vertex" href="#vertex">#</a> <i>vertex</i>
 
