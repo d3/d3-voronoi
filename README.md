@@ -105,7 +105,7 @@ Each site has the following properties:
 
 * `x` - an *x*-coordinate
 * `y` - an *y*-coordinate
-* `i` - the site’s index, corresponding to the index of the associated input point
+* `i` - the site’s index, corresponding to the associated input point
 
 <a name="halfedge" href="#halfedge">#</a> <i>halfedge</i>
 
@@ -115,25 +115,12 @@ Each halfedge has the following properties:
 * `edge` - the shared [edge](#edge)
 * `angle` - the edge angle, used for ordering
 
-<a name="halfedge_start" href="#halfedge">#</a> <i>halfedge</i>.<b>start</b>()
+Each halfedge also has the following methods:
 
-Returns the start [vertex](#vertex) of this halfedge. Halfedges always proceed counterclockwise, so this is defined as:
+* `start` - returns the start [vertex](#vertex)
+* `end` - returns the end [vertex](#vertex)
 
-```js
-function start() {
-  return this.edge.l === this.site ? this.edge.a : this.edge.b;
-}
-```
-
-<a name="halfedge_end" href="#halfedge">#</a> <i>halfedge</i>.<b>end</b>()
-
-Returns the end [vertex](#vertex) of this halfedge. Halfedges always proceed counterclockwise, so this is defined as:
-
-```js
-function end() {
-  return this.edge.l === this.site ? this.edge.b : this.edge.a;
-}
-```
+The start and end vertexes are defined such that halfedges proceed counterclockwise along the cell polygon.
 
 <a name="edge" href="#edge">#</a> <i>edge</i>
 
