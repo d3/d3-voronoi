@@ -87,21 +87,29 @@ TODO Clean this up!
 
 <a name="diagram" href="#diagram">#</a> <i>diagram</i>
 
+The computed Voronoi diagram has the following properties:
+
 * `cells` - an array of [cells](#diagram_cell), one per input point
 * `edges` - an array of [edges](#diagram_edge)
 
 <a name="cell" href="#cell">#</a> <i>cell</i>
+
+Each cell has the following properties:
 
 * `site` - the [site](#site) of the cell’s associated input point
 * `halfedges` - an array of [halfedges](#halfedge) representing the cell’s polygon
 
 <a name="site" href="#site">#</a> <i>site</i>
 
+Each site has the following properties:
+
 * `x` - an *x*-coordinate
 * `y` - an *y*-coordinate
 * `i` - the site’s index, corresponding to the index of the associated input point
 
 <a name="halfedge" href="#halfedge">#</a> <i>halfedge</i>
+
+Each halfedge has the following properties:
 
 * `site` - the owning [site](#site)
 * `edge` - the shared [edge](#edge)
@@ -129,6 +137,8 @@ function end() {
 
 <a name="edge" href="#edge">#</a> <i>edge</i>
 
+Each edge has the following properties:
+
 * `l` - the [site](#site) on the left side of the edge
 * `r` - the [site](#site) on the right side of the edge; null if this is a border edge
 * `a` - a [vertex](#vertex) defining the start of the edge
@@ -136,7 +146,9 @@ function end() {
 
 <a name="vertex" href="#vertex">#</a> <i>vertex</i>
 
-… TODO replace with [<i>x</i>, <i>y</i>]
+Each vertex has the following properties:
 
 * `x` - an *x*-coordinate
 * `y` - an *y*-coordinate
+
+TODO replace with [<i>x</i>, <i>y</i>]?
