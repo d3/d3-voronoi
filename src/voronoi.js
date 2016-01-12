@@ -85,10 +85,10 @@ export default function() {
       extent = null;
 
   function voronoi(data) {
-    return computeVoronoi(points(data), extent);
+    return computeVoronoi(sites(data), extent);
   }
 
-  function points(data) {
+  function sites(data) {
     return data.map(function(d, i) {
       return {
         x: Math.round(fx(d, i) / epsilon) * epsilon,
@@ -106,7 +106,7 @@ export default function() {
         x1 = box[1][0],
         y1 = box[1][1];
 
-    computeVoronoi(points(data), box).cells.forEach(function(cell, i) {
+    computeVoronoi(sites(data), box).cells.forEach(function(cell, i) {
       var edges = cell.edges,
           site = cell.site,
           polygon = polygons[i] = edges.length ? edges.map(function(e) { var s = e.start(); return [s.x, s.y]; })
@@ -119,7 +119,7 @@ export default function() {
   };
 
   voronoi.links = function(data) {
-    return computeVoronoi(points(data)).edges.filter(function(edge) {
+    return computeVoronoi(sites(data)).edges.filter(function(edge) {
       return edge.l && edge.r;
     }).map(function(edge) {
       return {
@@ -132,7 +132,7 @@ export default function() {
   voronoi.triangles = function(data) {
     var triangles = [];
 
-    computeVoronoi(points(data)).cells.forEach(function(cell, i) {
+    computeVoronoi(sites(data)).cells.forEach(function(cell, i) {
       var site = cell.site,
           edges = cell.edges.sort(descendingAngle),
           j = -1,

@@ -83,31 +83,52 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 
 ### Voronoi Diagrams
 
+TODO Clean this up!
+
 <a name="diagram" href="#diagram">#</a> <i>diagram</i>
 
 * `cells` - an array of [cells](#diagram_cell), one per input point
 * `edges` - an array of [edges](#diagram_edge)
 
-<a name="diagram_cell" href="#diagram_cell">#</a> <i>cell</i>
+<a name="cell" href="#cell">#</a> <i>cell</i>
 
-* `site` - the [site](#diagram_site) of the cell’s associated input point
-* `edges` - an array of [halfedges](#diagram_halfedge) representing the cell’s polygon
+* `site` - the [site](#site) of the cell’s associated input point
+* `edges` - an array of [halfedges](#halfedge) representing the cell’s polygon
 
-<a name="diagram_site" href="#diagram_site">#</a> <i>site</i>
+<a name="cell_prepare" href="#cell_prepare">#</a> <i>cell</i>.<b>prepare</b>()
+
+… TODO remove this
+
+<a name="site" href="#site">#</a> <i>site</i>
 
 * `x` - an *x*-coordinate
 * `y` - an *y*-coordinate
 * `i` - the site’s index, corresponding to the index of the associated input point
 
-<a name="diagram_halfedge" href="#diagram_halfedge">#</a> <i>halfedge</i>
+<a name="halfedge" href="#halfedge">#</a> <i>halfedge</i>
 
-* `site` - the owning [site](#diagram_site)
-* `edge` - the shared [edge](#diagram_edge)
+* `site` - the owning [site](#site)
+* `edge` - the shared [edge](#edge)
 * `angle` - the edge angle, used for ordering
 
-<a name="diagram_edge" href="#diagram_edge">#</a> <i>edge</i>
+<a name="halfedge_start" href="#halfedge">#</a> <i>halfedge</i>.<b>start</b>()
 
-* `l` - the [site](#diagram_site) on the left side of the edge
-* `r` - the [site](#diagram_site) on the right side of the edge; null if this is a border edge
-* `a` - a [vertex](#diagram_vertex) defining the start of the edge
-* `b` - a [vertex](#diagram_vertex) defining the end of the edge; null if this edge is unbounded
+…
+
+<a name="halfedge_end" href="#halfedge">#</a> <i>halfedge</i>.<b>end</b>()
+
+…
+
+<a name="edge" href="#edge">#</a> <i>edge</i>
+
+* `l` - the [site](#site) on the left side of the edge
+* `r` - the [site](#site) on the right side of the edge; null if this is a border edge
+* `a` - a [vertex](#vertex) defining the start of the edge
+* `b` - a [vertex](#vertex) defining the end of the edge; null if this edge is unbounded
+
+<a name="vertex" href="#vertex">#</a> <i>vertex</i>
+
+… TODO replace with [<i>x</i>, <i>y</i>]
+
+* `x` - an *x*-coordinate
+* `y` - an *y*-coordinate
