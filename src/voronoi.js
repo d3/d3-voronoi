@@ -108,11 +108,13 @@ export default function() {
         y1 = box[1][1];
 
     computeVoronoi(sites(data), box).cells.forEach(function(cell, i) {
-      var halfedges = cell.halfedges,
-          site = cell.site,
-          polygon = polygons[i] = halfedges.length ? halfedges.map(halfedgeStart)
-              : site[0] >= x0 && site[0] <= x1 && site[1] >= y0 && site[1] <= y1 ? [[x0, y1], [x1, y1], [x1, y0], [x0, y0]]
-              : [];
+      var site = cell.site,
+          halfedges = cell.halfedges,
+          polygon;
+      if (halfedges.length) polygon = halfedges.map(halfedgeStart);
+      else if (site[0] >= x0 && site[0] <= x1 && site[1] >= y0 && site[1] <= y1) polygon = [[x0, y1], [x1, y1], [x1, y0], [x0, y0]];
+      else return;
+      polygons[i] = polygon;
       polygon.data = data[i];
     });
 
