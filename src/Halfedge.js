@@ -1,8 +1,11 @@
-function Halfedge(edge, site, angle) {
+function Halfedge(edge, site) {
   this.edge = edge;
   this.site = site;
-  this.angle = angle;
 }
+
+export function createHalfedge(edge, site) {
+  return new Halfedge(edge, site);
+};
 
 export function halfedgeStart(halfedge) {
   return halfedge.edge[+(halfedge.edge.right === halfedge.site)];
@@ -12,14 +15,25 @@ export function halfedgeEnd(halfedge) {
   return halfedge.edge[+(halfedge.edge.left === halfedge.site)];
 };
 
-export function createHalfedge(edge, lSite, rSite) {
-  var va = edge[0],
-      vb = edge[1];
-  return new Halfedge(edge, lSite, rSite ? Math.atan2(rSite[1] - lSite[1], rSite[0] - lSite[0])
-      : edge.left === lSite ? Math.atan2(vb[0] - va[0], va[1] - vb[1])
-      : Math.atan2(va[0] - vb[0], vb[1] - va[1]));
+export function sortHalfedges(halfedges) {
+  if (!(n = halfedges.length)) return;
+  var n,
+      index = new Array(n),
+      array = new Array(n);
+  for (var i = 0; i < n; ++i) index[i] = i, array[i] = halfedgeAngle(halfedges[i]);
+  index.sort(function(i, j) { return array[j] - array[i]; });
+  for (var i = 0; i < n; ++i) array[i] = halfedges[index[i]];
+  for (var i = 0; i < n; ++i) halfedges[i] = array[i];
 };
 
-export function descendingAngle(a, b) {
-  return b.angle - a.angle;
-};
+function halfedgeAngle(halfedge) {
+  var edge = halfedge.edge,
+      va = edge.left,
+      vb = edge.right,
+      site = halfedge.site;
+  if (site === vb) vb = va, va = site;
+  if (vb) return Math.atan2(vb[1] - va[1], vb[0] - va[0]);
+  if (site === va) va = edge[1], vb = edge[0];
+  else va = edge[0], vb = edge[1];
+  return Math.atan2(va[0] - vb[0], vb[1] - va[1]);
+}

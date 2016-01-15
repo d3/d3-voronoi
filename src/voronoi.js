@@ -1,9 +1,9 @@
-import RedBlackTree from "./RedBlackTree";
 import {addBeach, removeBeach} from "./Beach";
-import {clipEdges} from "./Edge";
-import {closeCells} from "./Cell";
-import {halfedgeStart, descendingAngle} from "./Halfedge";
+import {cleanCells, closeCells} from "./Cell";
 import {firstCircle} from "./Circle";
+import {clipEdges} from "./Edge";
+import {halfedgeStart} from "./Halfedge";
+import RedBlackTree from "./RedBlackTree";
 
 var nullExtent = [[-1e6, -1e6], [1e6, 1e6]];
 
@@ -70,6 +70,8 @@ function computeVoronoi(sites, extent) {
         y1 = extent[1][1];
     clipEdges(x0, y0, x1, y1);
     closeCells(x0, y0, x1, y1);
+  } else {
+    cleanCells();
   }
 
   var diagram = {cells: cells, edges: edges};
@@ -133,7 +135,7 @@ export default function() {
 
     computeVoronoi(sites(data)).cells.forEach(function(cell, i) {
       var site = cell.site,
-          halfedges = cell.halfedges.sort(descendingAngle),
+          halfedges = cell.halfedges,
           j = -1,
           m = halfedges.length,
           e0,

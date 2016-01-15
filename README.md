@@ -95,7 +95,7 @@ The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the followin
 Each cell has the following properties:
 
 * `site` - the [site](#site) of the cell’s associated input point.
-* `halfedges` - an array of [halfedges](#halfedge) representing the cell’s polygon.
+* `halfedges` - an array of [halfedges](#halfedge), in counterclockwise order, representing the cell’s polygon.
 
 <a name="site" href="#site">#</a> <i>site</i>
 
@@ -110,7 +110,6 @@ Each halfedge has the following properties:
 
 * `site` - the owning [site](#site).
 * `edge` - the shared [edge](#edge).
-* `angle` - the edge angle, used for ordering.
 
 The start and end vertexes are defined such that halfedges proceed counterclockwise along the cell polygon.
 
