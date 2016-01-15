@@ -32,7 +32,7 @@ Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi
 
 <a name="_voronoi" href="#_voronoi">#</a> <i>voronoi</i>(<i>data</i>)
 
-Computes the Voronoi diagram for the specified *data* points. See [voronoi diagrams](#voronoi-diagrams) for details on the returned data structure. Warning: if any points are coincident or have NaN positions, **the behavior of this method is undefined.** Most likely, invalid polygons will be returned! You must filter invalid points and consolidate coincident points before computing.
+Computes the Voronoi diagram for the specified *data* points. See [voronoi diagrams](#voronoi-diagrams) for details on the returned data structure.
 
 <a name="voronoi_x" href="#voronoi_x">#</a> <i>voronoi</i>.<b>x</b>([<i>x</i>])
 
@@ -103,13 +103,15 @@ See [*diagram*.links](#diagram_links) for more detail.
 The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the following properties:
 
 * `edges` - an array of [edges](#diagram_edge).
-* `cells` - an array of [cells](#diagram_cell), one per input point.
+* `cells` - an array of [cells](#diagram_cell), one per input point; a cell may be null for a coincident point.
 * `cellEdges` - an array of [edges](#diagram_edge); identical to `edges` if clipping is not applied.
 * `extent` - the associated extent, [​[*x0*, *y0*], [*x1*, *y1*]]; null if clipping is not applied.
 
 <a name="diagram_polygons" href="#diagram_polygons">#</a> <i>diagram</i>.<b>polygons</b>(<i>extent</i>)
 
 Returns an array of polygons, one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner. Polygons are clipped to the [extent](#voronoi_extent).
+
+If the cell’s site is coincident with an earlier site, the associated polygon is null.
 
 <a name="diagram_triangles" href="#diagram_triangles">#</a> <i>diagram</i>.<b>triangles</b>()
 
