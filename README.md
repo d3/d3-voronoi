@@ -122,7 +122,7 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 * `source` - the source node, an element in *data*.
 * `target` - the target node, an element in *data*.
 
- The clipping extent does not affect the Delaunay triangulation.
+The clipping extent does not affect the Delaunay triangulation.
 
 <a name="cell" href="#cell">#</a> <i>cell</i>
 
