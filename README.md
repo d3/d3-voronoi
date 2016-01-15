@@ -109,11 +109,11 @@ The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the followin
 
 <a name="diagram_polygons" href="#diagram_polygons">#</a> <i>diagram</i>.<b>polygons</b>(<i>extent</i>)
 
-Returns an array of polygons, one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are *open* in that they do not contain closing points that duplicate the initial point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner. The polygons are clipped to the specified *extent*, represented as [​[*x0*, *y0*], [*x1*, *y1*]], where *x0* is the left side of the extent, *y0* is the top, *x1* is the right and *y1* is the bottom.
+Returns an array of polygons, one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner. Polygons are clipped to the [extent](#voronoi_extent).
 
 <a name="diagram_triangles" href="#diagram_triangles">#</a> <i>diagram</i>.<b>triangles</b>()
 
-Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*.
+Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*. The clipping extent does not affect the Delaunay triangulation.
 
 <a name="diagram_links" href="#diagram_links">#</a> <i>diagram</i>.<b>links</b>()
 
@@ -121,6 +121,8 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 
 * `source` - the source node, an element in *data*.
 * `target` - the target node, an element in *data*.
+
+ The clipping extent does not affect the Delaunay triangulation.
 
 <a name="cell" href="#cell">#</a> <i>cell</i>
 
