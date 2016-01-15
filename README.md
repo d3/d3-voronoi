@@ -60,14 +60,18 @@ If *extent* is specified, sets the clip extent of the Voronoi layout to the spec
 
 <a name="voronoi_size" href="#voronoi_size">#</a> <i>voronoi</i>.<b>size</b>([<i>size</i>])
 
-An alias for [*voronoi*.extent](#voronoi_extent) where the minimum *x* and *y* of the extent are ⟨0,0⟩. Given a Voronoi layout `v`, this is equivalent to `v.extent([[0, 0], size])`.
+An alias for [*voronoi*.extent](#voronoi_extent) where the minimum *x* and *y* of the extent are ⟨0,0⟩. Equivalent to:
+
+```js
+voronoi.extent([[0, 0], size]);
+```
 
 <a name="voronoi_polygons" href="#voronoi_polygons">#</a> <i>voronoi</i>.<b>polygons</b>(<i>data</i>)
 
 Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. This is a convenience method equivalent to:
 
 ```js
-voronoi(data).polygons(voronoi.extent())
+voronoi(data).polygons(voronoi.extent());
 ```
 
 See [*diagram*.polygons](#diagram_polygons) for more detail.
@@ -77,7 +81,7 @@ See [*diagram*.polygons](#diagram_polygons) for more detail.
 Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*. This is a convenience method equivalent to:
 
 ```js
-voronoi(data).triangles()
+voronoi(data).triangles();
 ```
 
 See [*diagram*.triangles](#diagram_triangles) for more detail.
@@ -92,7 +96,7 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 This is a convenience method equivalent to:
 
 ```js
-voronoi(data).links()
+voronoi(data).links();
 ```
 
 See [*diagram*.links](#diagram_links) for more detail.
