@@ -68,7 +68,7 @@ voronoi.extent([[0, 0], size]);
 
 <a name="voronoi_polygons" href="#voronoi_polygons">#</a> <i>voronoi</i>.<b>polygons</b>(<i>data</i>)
 
-Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. This is a convenience method equivalent to:
+Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. Equivalent to:
 
 ```js
 voronoi(data).polygons(voronoi.extent());
@@ -78,7 +78,7 @@ See [*diagram*.polygons](#diagram_polygons) for more detail.
 
 <a name="voronoi_triangles" href="#voronoi_triangles">#</a> <i>voronoi</i>.<b>triangles</b>(<i>data</i>)
 
-Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*. This is a convenience method equivalent to:
+Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*. Equivalent to:
 
 ```js
 voronoi(data).triangles();
@@ -93,7 +93,7 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 * `source` - the source node, an element in *data*.
 * `target` - the target node, an element in *data*.
 
-This is a convenience method equivalent to:
+Equivalent to:
 
 ```js
 voronoi(data).links();
