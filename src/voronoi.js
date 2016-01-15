@@ -13,10 +13,10 @@ export default function() {
       s.index = i;
       s.data = d;
       return s;
-    }));
+    }), extent);
   }
   voronoi.polygons = function(data) {
-    return voronoi(data).polygons(extent);
+    return voronoi(data).polygons();
   };
 
   voronoi.links = function(data) {

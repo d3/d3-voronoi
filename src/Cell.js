@@ -20,11 +20,11 @@ function cellHalfedgeAngle(cell, edge) {
 }
 
 export function cellHalfedgeStart(cell, edge) {
-  return edge[edge.left ? +(edge.right === cell.site) : 0];
+  return edge[+(edge.left !== cell.site)];
 };
 
 export function cellHalfedgeEnd(cell, edge) {
-  return edge[edge.left ? +(edge.left === cell.site) : 1];
+  return edge[+(edge.left === cell.site)];
 };
 
 export function sortCellHalfedges() {
@@ -40,30 +40,27 @@ export function sortCellHalfedges() {
   }
 };
 
-export function clippedCells(cells, edges, x0, y0, x1, y1) {
+export function clipCells(edges, x0, y0, x1, y1) {
   var iCell = cells.length,
-      clippedCells = new Array(iCell),
-      x2,
-      y2,
-      x3,
-      y3,
       cell,
-      clippedCell,
       iHalfedge,
       halfedges,
       nHalfedges,
       start,
-      end;
+      startX,
+      startY,
+      end,
+      endX,
+      endY;
 
   while (iCell--) {
-    if (cell = clippedCell = cells[iCell]) {
+    if (cell = cells[iCell]) {
       halfedges = cell.halfedges;
       iHalfedge = halfedges.length;
 
       // Remove any dangling clipped edges.
       while (iHalfedge--) {
         if (!edges[halfedges[iHalfedge]]) {
-          if (clippedCell === cell) clippedCell = {site: cell.site, halfedges: halfedges = halfedges.slice()}; // Copy-on-write.
           halfedges.splice(iHalfedge, 1);
         }
       }
@@ -71,23 +68,18 @@ export function clippedCells(cells, edges, x0, y0, x1, y1) {
       // Insert any border edges as necessary.
       iHalfedge = 0, nHalfedges = halfedges.length;
       while (iHalfedge < nHalfedges) {
-        end = cellHalfedgeEnd(cell, edges[halfedges[iHalfedge]]), x3 = end[0], y3 = end[1];
-        start = cellHalfedgeStart(cell, edges[halfedges[++iHalfedge % nHalfedges]]), x2 = start[0], y2 = start[1];
-        if (Math.abs(x3 - x2) > epsilon || Math.abs(y3 - y2) > epsilon) {
-          if (clippedCell === cell) clippedCell = {site: cell.site, halfedges: halfedges = halfedges.slice()}; // Copy-on-write.
-          halfedges.splice(iHalfedge, 0, edges.push([end,
-              Math.abs(x3 - x0) < epsilon && y1 - y3 > epsilon ? [x0, Math.abs(x2 - x0) < epsilon ? y2 : y1]
-              : Math.abs(y3 - y1) < epsilon && x1 - x3 > epsilon ? [Math.abs(y2 - y1) < epsilon ? x2 : x1, y1]
-              : Math.abs(x3 - x1) < epsilon && y3 - y0 > epsilon ? [x1, Math.abs(x2 - x1) < epsilon ? y2 : y0]
-              : Math.abs(y3 - y0) < epsilon && x3 - x0 > epsilon ? [Math.abs(y2 - y0) < epsilon ? x2 : x0, y0]
-              : null]) - 1);
+        end = cellHalfedgeEnd(cell, edges[halfedges[iHalfedge]]), endX = end[0], endY = end[1];
+        start = cellHalfedgeStart(cell, edges[halfedges[++iHalfedge % nHalfedges]]), startX = start[0], startY = start[1];
+        if (Math.abs(endX - startX) > epsilon || Math.abs(endY - startY) > epsilon) {
+          halfedges.splice(iHalfedge, 0, edges.push(createBorderEdge(cell.site, end,
+              Math.abs(endX - x0) < epsilon && y1 - endY > epsilon ? [x0, Math.abs(startX - x0) < epsilon ? startY : y1]
+              : Math.abs(endY - y1) < epsilon && x1 - endX > epsilon ? [Math.abs(startY - y1) < epsilon ? startX : x1, y1]
+              : Math.abs(endX - x1) < epsilon && endY - y0 > epsilon ? [x1, Math.abs(startX - x1) < epsilon ? startY : y0]
+              : Math.abs(endY - y0) < epsilon && endX - x0 > epsilon ? [Math.abs(startY - y0) < epsilon ? startX : x0, y0]
+              : null)) - 1);
           ++nHalfedges;
         }
       }
-
-      clippedCells[iCell] = clippedCell;
     }
   }
-
-  return clippedCells;
 };

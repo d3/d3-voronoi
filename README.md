@@ -71,10 +71,10 @@ voronoi.extent([[0, 0], size]);
 Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. Equivalent to:
 
 ```js
-voronoi(data).polygons(voronoi.extent());
+voronoi(data).polygons();
 ```
 
-See [*diagram*.polygons](#diagram_polygons) for more detail.
+See [*diagram*.polygons](#diagram_polygons) for more detail. Note: an [extent](#voronoi_extent) is required.
 
 <a name="voronoi_triangles" href="#voronoi_triangles">#</a> <i>voronoi</i>.<b>triangles</b>(<i>data</i>)
 
@@ -102,12 +102,14 @@ See [*diagram*.links](#diagram_links) for more detail.
 
 The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the following properties:
 
-* `cells` - an array of [cells](#diagram_cell), one per input point.
 * `edges` - an array of [edges](#diagram_edge).
+* `cells` - an array of [cells](#diagram_cell), one per input point.
+* `cellEdges` - an array of [edges](#diagram_edge); identical to `edges` if clipping is not applied.
+* `extent` - the associated extent, [​[*x0*, *y0*], [*x1*, *y1*]]; null if clipping is not applied.
 
 <a name="diagram_polygons" href="#diagram_polygons">#</a> <i>diagram</i>.<b>polygons</b>(<i>extent</i>)
 
-Returns an array of polygons, one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are *open* in that they do not contain closing points that duplicate the initial point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner. The polygons are clipped to the specified *extent*, represented as [​[<i>x0</i>, <i>y0</i>], [<i>x1</i>, <i>y1</i>]​], where <i>x0</i> is the left side of the extent, <i>y0</i> is the top, <i>x1</i> is the right and <i>y1</i> is the bottom.
+Returns an array of polygons, one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are *open* in that they do not contain closing points that duplicate the initial point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner. The polygons are clipped to the specified *extent*, represented as [​[*x0*, *y0*], [*x1*, *y1*]], where *x0* is the left side of the extent, *y0* is the top, *x1* is the right and *y1* is the bottom.
 
 <a name="diagram_triangles" href="#diagram_triangles">#</a> <i>diagram</i>.<b>triangles</b>()
 
@@ -138,5 +140,5 @@ Each site in the diagram is an array [*x*, *y*] with two additional properties:
 
 Each edge in the diagram is an array [​[*x0*, *y0*], [*x1*, *y1*]] with two additional properties:
 
-* `left` - the [site](#site) on the left side of the edge
-* `right` - the [site](#site) on the right side of the edge
+* `left` - the [site](#site) on the left side of the edge.
+* `right` - the [site](#site) on the right side of the edge; null if this is a clipped border edge.

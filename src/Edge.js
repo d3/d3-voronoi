@@ -12,6 +12,12 @@ export function createEdge(left, right, v0, v1) {
   return edge;
 };
 
+export function createBorderEdge(left, v0, v1) {
+  var edge = [v0, v1];
+  edge.left = left;
+  return edge;
+};
+
 export function setEdgeEnd(edge, left, right, vertex) {
   if (!edge[0] && !edge[1]) {
     edge[0] = vertex;
@@ -152,7 +158,7 @@ function connectedEdge(edge, x0, y0, x1, y1) {
   return edge;
 }
 
-export function clippedEdges(edges, x0, y0, x1, y1) {
+export function clippedEdges(x0, y0, x1, y1) {
   var i = edges.length,
       clippedEdges = new Array(i),
       edge;
