@@ -32,7 +32,7 @@ Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi
 
 <a name="_voronoi" href="#_voronoi">#</a> <i>voronoi</i>(<i>data</i>)
 
-Computes the Voronoi diagram for the specified *data* points. See [voronoi diagrams](#voronoi-diagrams) for details on the returned data structure.
+Computes the [Voronoi diagram](#voronoi-diagrams) for the specified *data* points.
 
 <a name="voronoi_x" href="#voronoi_x">#</a> <i>voronoi</i>.<b>x</b>([<i>x</i>])
 
