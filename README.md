@@ -88,12 +88,7 @@ See [*diagram*.triangles](#diagram_triangles) for more detail.
 
 <a name="voronoi_links" href="#voronoi_links">#</a> <i>voronoi</i>.<b>links</b>(<i>data</i>)
 
-Returns the Delaunay triangulation of the specified *data* array as an array of links. Each link has the following attributes:
-
-* `source` - the source node, an element in *data*.
-* `target` - the target node, an element in *data*.
-
-Equivalent to:
+Returns the Delaunay triangulation of the specified *data* array as an array of links. Each link has `source` and `target` attributes referring to elements in *data*. Equivalent to:
 
 ```js
 voronoi(data).links();
