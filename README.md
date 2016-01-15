@@ -143,4 +143,4 @@ Each site in the diagram is an array [*x*, *y*] with two additional properties:
 Each edge in the diagram is an array [​[*x0*, *y0*], [*x1*, *y1*]] with two additional properties:
 
 * `left` - the [site](#site) on the left side of the edge.
-* `right` - the [site](#site) on the right side of the edge; null if this is a clipped border edge.
+* `right` - the [site](#site) on the right side of the edge; null for a clipped border edge.
