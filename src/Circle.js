@@ -55,7 +55,7 @@ export function attachCircle(arc) {
       node = circles._;
 
   while (node) {
-    if (circle.y < node[1] || (circle.y === node[1] && circle.x <= node[0])) {
+    if (circle.y < node.y || (circle.y === node.y && circle.x <= node.x)) {
       if (node.L) node = node.L;
       else { before = node.P; break; }
     } else {
