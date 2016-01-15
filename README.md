@@ -122,21 +122,21 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 
 <a name="cell" href="#cell">#</a> <i>cell</i>
 
-Each cell has the following properties:
+Each cell in the diagram is an object with the following properties:
 
 * `site` - the [site](#site) of the cell’s associated input point.
 * `halfedges` - an array of indexes into [*diagram*.edges](#diagram), in counterclockwise order, representing the cell’s polygon.
 
 <a name="site" href="#site">#</a> <i>site</i>
 
-Each site is an array [*x*, *y*] with two additional properties:
+Each site in the diagram is an array [*x*, *y*] with two additional properties:
 
 * `index` - the site’s index, corresponding to the associated input point.
 * `data` - the input data corresponding to this site.
 
 <a name="edge" href="#edge">#</a> <i>edge</i>
 
-Each edge is an array [​[*x0*, *y0*], [*x1*, *y1*]] with two additional properties:
+Each edge in the diagram is an array [​[*x0*, *y0*], [*x1*, *y1*]] with two additional properties:
 
 * `left` - the [site](#site) on the left side of the edge
 * `right` - the [site](#site) on the right side of the edge
