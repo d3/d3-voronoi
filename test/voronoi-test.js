@@ -3,6 +3,9 @@ var tape = require("tape"),
     asArray = require("./asArray"),
     polygonArea = require("./polygonArea");
 
+var infinity = 1e6, // For sufficiently small values of Infinity.
+    infinite = [[-infinity, -infinity], [infinity, infinity]];
+
 tape("voronoi() has the expected defaults", function(test) {
   var v = voronoi.voronoi();
   test.equal(v.extent(), null);
@@ -20,7 +23,7 @@ tape("voronoi.size([x, y]) is an alias for voronoi.extent([[0, 0], [x, y]])", fu
   v.size([960, 500]);
   test.deepEqual(v.size(), [960, 500]);
   test.deepEqual(v.extent(), [[0, 0], [960, 500]]);
-  test.deepEqual(asArray(v.cells([[200, 200], [760, 300]])), [
+  test.deepEqual(asArray(v.polygons([[200, 200], [760, 300]])), [
     [[435.3571428571429, 500], [524.6428571428572, 0], [0, 0], [0, 500]],
     [[524.6428571428572, 0], [435.3571428571429, 500], [960, 500], [960, 0]]
   ]);
@@ -34,7 +37,7 @@ tape("voronoi.extent([[x1, y1], [x2, y2]]) sets the specified extent", function(
   v.extent([[0, 0], [960, 500]]);
   test.deepEqual(v.size(), [960, 500]);
   test.deepEqual(v.extent(), [[0, 0], [960, 500]]);
-  test.deepEqual(asArray(v.cells([[200, 200], [760, 300]])), [
+  test.deepEqual(asArray(v.polygons([[200, 200], [760, 300]])), [
     [[435.3571428571429, 500], [524.6428571428572, 0], [0, 0], [0, 500]],
     [[524.6428571428572, 0], [435.3571428571429, 500], [960, 500], [960, 0]]
   ]);
@@ -42,59 +45,59 @@ tape("voronoi.extent([[x1, y1], [x2, y2]]) sets the specified extent", function(
 });
 
 tape("voronoi.x(x) sets the specified x-accessor", function(test) {
-  var v = voronoi.voronoi();
+  var v = voronoi.voronoi().extent(infinite);
   test.equal(v.x(function(d) { return d.x; }), v);
   test.equal(v.x()({x: 1}), 1);
-  test.deepEqual(asArray(v.cells([{x: 200, 1: 200}, {x: 760, 1: 300}])), [
-    [[-178046.78571428574, 1e6], [179096.07142857145, -1e6], [-1e6, -1e6], [-1e6, 1e6]],
-    [[179096.07142857145, -1e6], [-178046.78571428574, 1e6], [1e6, 1e6], [1e6, -1e6]]
+  test.deepEqual(asArray(v.polygons([{x: 200, 1: 200}, {x: 760, 1: 300}])), [
+    [[-178046.78571428574, infinity], [179096.07142857145, -infinity], [-infinity, -infinity], [-infinity, infinity]],
+    [[179096.07142857145, -infinity], [-178046.78571428574, infinity], [infinity, infinity], [infinity, -infinity]]
   ]);
   test.end();
 });
 
 tape("voronoi.y(y) sets the specified y-accessor", function(test) {
-  var v = voronoi.voronoi();
+  var v = voronoi.voronoi().extent(infinite);
   test.equal(v.y(function(d) { return d.y; }), v);
   test.equal(v.y()({y: 1}), 1);
-  test.deepEqual(asArray(v.cells([{0: 200, y: 200}, {0: 760, y: 300}])), [
-    [[-178046.78571428574, 1e6], [179096.07142857145, -1e6], [-1e6, -1e6], [-1e6, 1e6]],
-    [[179096.07142857145, -1e6], [-178046.78571428574, 1e6], [1e6, 1e6], [1e6, -1e6]]
+  test.deepEqual(asArray(v.polygons([{0: 200, y: 200}, {0: 760, y: 300}])), [
+    [[-178046.78571428574, infinity], [179096.07142857145, -infinity], [-infinity, -infinity], [-infinity, infinity]],
+    [[179096.07142857145, -infinity], [-178046.78571428574, infinity], [infinity, infinity], [infinity, -infinity]]
   ]);
   test.end();
 });
 
 tape("voronoi.x(x) allows the specified x-accessor to be a constant", function(test) {
-  var v = voronoi.voronoi().y(function(d) { return d; });
+  var v = voronoi.voronoi().extent(infinite).y(function(d) { return d; });
   test.equal(v.x(42), v);
-  test.equal(v.x(), 42);
-  test.deepEqual(asArray(v.cells([200, 760])), [
-    [[-1e6, 480], [1e6, 480], [1e6, -1e6], [-1e6, -1e6]],
-    [[1e6, 480], [-1e6, 480], [-1e6, 1e6], [1e6, 1e6]]
+  test.equal(v.x()(), 42);
+  test.deepEqual(asArray(v.polygons([200, 760])), [
+    [[-infinity, 480], [infinity, 480], [infinity, -infinity], [-infinity, -infinity]],
+    [[infinity, 480], [-infinity, 480], [-infinity, infinity], [infinity, infinity]]
   ]);
   test.end();
 });
 
 tape("voronoi.y(y) allows the specified y-accessor to be a constant", function(test) {
-  var v = voronoi.voronoi().x(function(d) { return d; });
+  var v = voronoi.voronoi().extent(infinite).x(function(d) { return d; });
   test.equal(v.y(43), v);
-  test.equal(v.y(), 43);
-  test.deepEqual(asArray(v.cells([200, 760])), [
-    [[480, 1e6], [480, -1e6], [-1e6, -1e6], [-1e6, 1e6]],
-    [[480, -1e6], [480, 1e6], [1e6, 1e6], [1e6, -1e6]]
+  test.equal(v.y()(), 43);
+  test.deepEqual(asArray(v.polygons([200, 760])), [
+    [[480, infinity], [480, -infinity], [-infinity, -infinity], [-infinity, infinity]],
+    [[480, -infinity], [480, infinity], [infinity, infinity], [infinity, -infinity]]
   ]);
   test.end();
 });
 
-tape("voronoi.cells(points) returns an array of polygons for the specified points", function(test) {
-  test.deepEqual(asArray(voronoi.voronoi().cells([[200, 200], [760, 300]])), [
-    [[-178046.78571428574, 1e6], [179096.07142857145, -1e6], [-1e6, -1e6], [-1e6, 1e6]],
-    [[179096.07142857145, -1e6], [-178046.78571428574, 1e6], [1e6, 1e6], [1e6, -1e6]]
+tape("voronoi.polygons(points) returns an array of polygons for the specified points", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[200, 200], [760, 300]])), [
+    [[-178046.78571428574, infinity], [179096.07142857145, -infinity], [-infinity, -infinity], [-infinity, infinity]],
+    [[179096.07142857145, -infinity], [-178046.78571428574, infinity], [infinity, infinity], [infinity, -infinity]]
   ]);
   test.end();
 });
 
-tape("voronoi.cells(points) returns open, counterclockwise polygons", function(test) {
-  voronoi.voronoi().cells([[200, 200], [760, 300]]).forEach(function(cell) {
+tape("voronoi.polygons(points) returns open, counterclockwise polygons", function(test) {
+  voronoi.voronoi().extent(infinite).polygons([[200, 200], [760, 300]]).forEach(function(cell) {
     test.ok(cell.length > 2);
     test.ok(cell[0][0] !== cell[cell.length - 1][0] || cell[0][1] !== cell[cell.length - 1][1]);
     test.ok(polygonArea(cell) > 0);
@@ -102,86 +105,90 @@ tape("voronoi.cells(points) returns open, counterclockwise polygons", function(t
   test.end();
 });
 
-tape("voronoi.cells(points) has an implicit extent of [[-1e6, -1e6], [1e6, 1e6]]", function(test) {
-  var x0 = Infinity,
-      x1 = -Infinity,
-      y0 = Infinity,
-      y1 = -Infinity,
-      v = voronoi.voronoi();
-  v.cells([[200, 200], [760, 300]]).forEach(function(cell) {
-    cell.forEach(function(point) {
-      if (point[0] < x0) x0 = point[0];
-      if (point[0] > x1) x1 = point[0];
-      if (point[1] < y0) y0 = point[1];
-      if (point[1] > y1) y1 = point[1];
-    });
-  });
-  test.equal(x0, -1e6);
-  test.equal(x1, 1e6);
-  test.equal(y0, -1e6);
-  test.equal(y1, 1e6);
-  test.deepEqual(asArray(v.cells([[50, 50]])), [[[-1e6, 1e6], [1e6, 1e6], [1e6, -1e6], [-1e6, -1e6]]]);
-  test.ok(v.cells([[50, 50]]).every(function(polygon) { return polygonArea(polygon) > 0; }));
+tape("voronoi.polygons(points) has no implicit extent", function(test) {
+  test.throws(function() { voronoi.voronoi().polygons([[100, 100]]); }, /TypeError/);
   test.end();
 });
 
-tape("voronoi.cells(points) returns polygons where polygons[i].data is equal to points[i]", function(test) {
+tape("voronoi.polygons(points) returns polygons where polygons[i].data is equal to points[i]", function(test) {
   var points = [[200, 200], [760, 300]];
-  voronoi.voronoi().cells(points).forEach(function(cell, i) {
+  voronoi.voronoi().extent(infinite).polygons(points).forEach(function(cell, i) {
     test.equal(cell.data, points[i]);
   });
   test.end();
 });
 
-tape("voronoi.cells(points) can separate two points with a horizontal line", function(test) {
-  test.deepEqual(asArray(voronoi.voronoi().cells([[0, -100], [0, 100]])), [
-    [[-1e6, 0], [1e6, 0], [1e6, -1e6], [-1e6, -1e6]],
-    [[1e6, 0], [-1e6, 0], [-1e6, 1e6], [1e6, 1e6]],
-  ]);
-  test.deepEqual(asArray(voronoi.voronoi().cells([[0, 100], [0, -100]])), [
-    [[1e6, 0], [-1e6, 0], [-1e6, 1e6], [1e6, 1e6]],
-    [[-1e6, 0], [1e6, 0], [1e6, -1e6], [-1e6, -1e6]]
+tape("voronoi.polygons(points) can handle a single point inside the extent", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[100, 100]])), [
+    [[0, 500], [960, 500], [960, 0], [0, 0]]
   ]);
   test.end();
 });
 
-tape("voronoi.cells(points) can separate two points with a vertical line", function(test) {
-  test.deepEqual(asArray(voronoi.voronoi().cells([[100, 0], [-100, 0]])), [
-    [[0, -1e6], [0, 1e6], [1e6, 1e6], [1e6, -1e6]],
-    [[0, 1e6], [0, -1e6], [-1e6, -1e6], [-1e6, 1e6]]
-  ]);
-  test.deepEqual(asArray(voronoi.voronoi().cells([[-100, 0], [100, 0]])), [
-    [[0, 1e6], [0, -1e6], [-1e6, -1e6], [-1e6, 1e6]],
-    [[0, -1e6], [0, 1e6], [1e6, 1e6], [1e6, -1e6]]
+tape("voronoi.polygons(points) can handle a single point outside the extent", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[-100, -100]])), [
+    ,
   ]);
   test.end();
 });
 
-tape("voronoi.cells(points) can separate two points with a diagonal line", function(test) {
-  test.deepEqual(asArray(voronoi.voronoi().cells([[-100, -100], [100, 100]])), [
-    [[-1e6, 1e6], [1e6, -1e6], [-1e6, -1e6]],
-    [[1e6, -1e6], [-1e6, 1e6], [1e6, 1e6]]
-  ]);
-  test.deepEqual(asArray(voronoi.voronoi().cells([[100, 100], [-100, -100]])), [
-    [[1e6, -1e6], [-1e6, 1e6], [1e6, 1e6]],
-    [[-1e6, 1e6], [1e6, -1e6], [-1e6, -1e6]]
+tape("voronoi.polygons(points) can handle a two points, one inside and one outside", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[480, -200], [480, 100]])), [
+    ,
+    [[0, 500], [960, 500], [960, 0], [0, 0]]
   ]);
   test.end();
 });
 
-tape("voronoi.cells(points) can separate two points with an arbitrary diagonal", function(test) {
-  test.deepEqual(asArray(voronoi.voronoi().cells([[-100, -100], [100, 0]])), [
-    [[-500025, 1e6], [499975, -1e6], [-1e6, -1e6], [-1e6, 1e6]],
-    [ [499975, -1e6], [-500025, 1e6], [1e6, 1e6], [1e6, -1e6]]
+tape("voronoi.polygons(points) can separate two points with a horizontal line", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[0, -100], [0, 100]])), [
+    [[-infinity, 0], [infinity, 0], [infinity, -infinity], [-infinity, -infinity]],
+    [[infinity, 0], [-infinity, 0], [-infinity, infinity], [infinity, infinity]],
+  ]);
+  test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[0, 100], [0, -100]])), [
+    [[infinity, 0], [-infinity, 0], [-infinity, infinity], [infinity, infinity]],
+    [[-infinity, 0], [infinity, 0], [infinity, -infinity], [-infinity, -infinity]]
   ]);
   test.end();
 });
 
-tape("voronoi.cells(points) can handle three collinear points", function(test) {
-  test.deepEqual(asArray(voronoi.voronoi().cells([[-100, -100], [0, 0], [100, 100]])), [
-    [[-1e6, 999900], [999900, -1e6], [-1e6, -1e6]],
-    [[-999900, 1e6], [1e6, -999900], [1e6, -1e6], [999900, -1e6], [-1e6, 999900], [-1e6, 1e6]],
-    [[1e6, -999900], [-999900, 1e6], [1e6, 1e6]]
+tape("voronoi.polygons(points) can separate two points with a vertical line", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[100, 0], [-100, 0]])), [
+    [[0, -infinity], [0, infinity], [infinity, infinity], [infinity, -infinity]],
+    [[0, infinity], [0, -infinity], [-infinity, -infinity], [-infinity, infinity]]
+  ]);
+  test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[-100, 0], [100, 0]])), [
+    [[0, infinity], [0, -infinity], [-infinity, -infinity], [-infinity, infinity]],
+    [[0, -infinity], [0, infinity], [infinity, infinity], [infinity, -infinity]]
+  ]);
+  test.end();
+});
+
+tape("voronoi.polygons(points) can separate two points with a diagonal line", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[-100, -100], [100, 100]])), [
+    [[-infinity, infinity], [infinity, -infinity], [-infinity, -infinity]],
+    [[infinity, -infinity], [-infinity, infinity], [infinity, infinity]]
+  ]);
+  test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[100, 100], [-100, -100]])), [
+    [[infinity, -infinity], [-infinity, infinity], [infinity, infinity]],
+    [[-infinity, infinity], [infinity, -infinity], [-infinity, -infinity]]
+  ]);
+  test.end();
+});
+
+tape("voronoi.polygons(points) can separate two points with an arbitrary diagonal", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[-100, -100], [100, 0]])), [
+    [[-500025, infinity], [499975, -infinity], [-infinity, -infinity], [-infinity, infinity]],
+    [ [499975, -infinity], [-500025, infinity], [infinity, infinity], [infinity, -infinity]]
+  ]);
+  test.end();
+});
+
+tape("voronoi.polygons(points) can handle three collinear points", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[-100, -100], [0, 0], [100, 100]])), [
+    [[-infinity, 999900], [999900, -infinity], [-infinity, -infinity]],
+    [[-999900, infinity], [infinity, -999900], [infinity, -infinity], [999900, -infinity], [-infinity, 999900], [-infinity, infinity]],
+    [[infinity, -999900], [-999900, infinity], [infinity, infinity]]
   ]);
   test.end();
 });

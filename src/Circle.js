@@ -1,5 +1,5 @@
 import {RedBlackNode} from "./RedBlackTree";
-import {circles, epsilon2} from "./voronoi";
+import {circles, epsilon2} from "./Diagram";
 
 var circlePool = [];
 

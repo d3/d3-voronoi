@@ -28,7 +28,7 @@ In a vanilla environment, a `d3_voronoi` global is exported. [Try d3-voronoi in 
 
 <a name="voronoi" href="#voronoi">#</a> d3.<b>voronoi</b>()
 
-Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi_y)accessors and the default [extent](#voronoi_extent).
+Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi_y)accessors and a null [extent](#voronoi_extent).
 
 <a name="_voronoi" href="#_voronoi">#</a> <i>voronoi</i>(<i>data</i>)
 
@@ -58,17 +58,31 @@ function y(d) {
 
 If *extent* is specified, sets the clip extent of the Voronoi layout to the specified bounds and returns the layout. The *extent* bounds are specified as an array [​[<i>x0</i>, <i>y0</i>], [<i>x1</i>, <i>y1</i>]​], where <i>x0</i> is the left side of the extent, <i>y0</i> is the top, <i>x1</i> is the right and <i>y1</i> is the bottom. If *extent* is not specified, returns the current clip extent which defaults to null.
 
-If the extent is null, no clipping is performed when the Voronoi diagram is generated. A clip extent is strongly recommended in conjunction with [*voronoi*.cells](#voronoi_cells), as unclipped polygons may have large coordinates which may not render correctly.
+If the extent is null, no clipping is performed when the Voronoi diagram is generated. A clip extent is required in conjunction with [*voronoi*.polygons](#voronoi_polygons), as unclipped polygons may have large coordinates which may not render correctly.
 
 <a name="voronoi_size" href="#voronoi_size">#</a> <i>voronoi</i>.<b>size</b>([<i>size</i>])
 
 An alias for [*voronoi*.extent](#voronoi_extent) where the minimum *x* and *y* of the extent are ⟨0,0⟩. Given a Voronoi layout `v`, this is equivalent to `v.extent([[0, 0], size])`.
 
-<a name="voronoi_cells" href="#voronoi_cells">#</a> <i>voronoi</i>.<b>cells</b>(<i>data</i>[, <i>extent</i>])
+<a name="voronoi_polygons" href="#voronoi_polygons">#</a> <i>voronoi</i>.<b>polygons</b>(<i>data</i>)
 
-Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. For each element *i* in *data*, the polygon *i* represents the corresponding cell in the computed Voronoi diagram.
+Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. This is a convenience method equivalent to:
 
-Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are *open* in that they do not contain closing points that duplicate the initial point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
+```js
+voronoi(data).polygons(voronoi.extent())
+```
+
+See [*diagram*.polygons](#diagram_polygons) for more detail.
+
+<a name="voronoi_triangles" href="#voronoi_triangles">#</a> <i>voronoi</i>.<b>triangles</b>(<i>data</i>)
+
+Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*. This is a convenience method equivalent to:
+
+```js
+voronoi(data).triangles()
+```
+
+See [*diagram*.triangles](#diagram_triangles) for more detail.
 
 <a name="voronoi_links" href="#voronoi_links">#</a> <i>voronoi</i>.<b>links</b>(<i>data</i>)
 
@@ -77,9 +91,13 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 * `source` - the source node, an element in *data*.
 * `target` - the target node, an element in *data*.
 
-<a name="voronoi_triangles" href="#voronoi_triangles">#</a> <i>voronoi</i>.<b>triangles</b>(<i>data</i>)
+This is a convenience method equivalent to:
 
-Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*.
+```js
+voronoi(data).links()
+```
+
+See [*diagram*.links](#diagram_links) for more detail.
 
 ### Voronoi Diagrams
 
@@ -90,12 +108,27 @@ The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the followin
 * `cells` - an array of [cells](#diagram_cell), one per input point.
 * `edges` - an array of [edges](#diagram_edge).
 
+<a name="diagram_polygons" href="#diagram_polygons">#</a> <i>diagram</i>.<b>polygons</b>(<i>extent</i>)
+
+Returns an array of polygons, one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are *open* in that they do not contain closing points that duplicate the initial point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
+
+<a name="diagram_triangles" href="#diagram_triangles">#</a> <i>diagram</i>.<b>triangles</b>()
+
+Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*.
+
+<a name="diagram_links" href="#diagram_links">#</a> <i>diagram</i>.<b>links</b>()
+
+Returns the Delaunay triangulation of the specified *data* array as an array of links, one for each edge in the mesh. Each link has the following attributes:
+
+* `source` - the source node, an element in *data*.
+* `target` - the target node, an element in *data*.
+
 <a name="cell" href="#cell">#</a> <i>cell</i>
 
 Each cell has the following properties:
 
 * `site` - the [site](#site) of the cell’s associated input point.
-* `halfedges` - an array of [halfedges](#halfedge), in counterclockwise order, representing the cell’s polygon.
+* `halfedges` - an array of indexes into [*diagram*.edges](#diagram), in counterclockwise order, representing the cell’s polygon.
 
 <a name="site" href="#site">#</a> <i>site</i>
 
@@ -104,18 +137,9 @@ Each site is an array [*x*, *y*] with two additional properties:
 * `index` - the site’s index, corresponding to the associated input point.
 * `data` - the input data corresponding to this site.
 
-<a name="halfedge" href="#halfedge">#</a> <i>halfedge</i>
-
-Each halfedge has the following properties:
-
-* `site` - the owning [site](#site).
-* `edge` - the shared [edge](#edge).
-
-The start and end vertexes are defined such that halfedges proceed counterclockwise along the cell polygon.
-
 <a name="edge" href="#edge">#</a> <i>edge</i>
 
 Each edge is an array [​[*x0*, *y0*], [*x1*, *y1*]] with two additional properties:
 
 * `left` - the [site](#site) on the left side of the edge
-* `right` - the [site](#site) on the right side of the edge; null if this is a border edge
+* `right` - the [site](#site) on the right side of the edge

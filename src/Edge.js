@@ -1,32 +1,23 @@
-import {createHalfedge} from "./Halfedge";
-import {cells, edges, epsilon} from "./voronoi";
+import {cells, edges, epsilon} from "./Diagram";
 
-export function createEdge(lSite, rSite, va, vb) {
-  var edge = [null, null];
-  edge.left = lSite;
-  edge.right = rSite;
-  edges.push(edge);
-  if (va) setEdgeEnd(edge, lSite, rSite, va);
-  if (vb) setEdgeEnd(edge, rSite, lSite, vb);
-  cells[lSite.index].halfedges.push(createHalfedge(edge, lSite, rSite));
-  cells[rSite.index].halfedges.push(createHalfedge(edge, rSite, lSite));
+export function createEdge(left, right, v0, v1) {
+  var edge = [null, null],
+      index = edges.push(edge) - 1;
+  edge.left = left;
+  edge.right = right;
+  if (v0) setEdgeEnd(edge, left, right, v0);
+  if (v1) setEdgeEnd(edge, right, left, v1);
+  cells[left.index].halfedges.push(index);
+  cells[right.index].halfedges.push(index);
   return edge;
 };
 
-export function createBorderEdge(lSite, va, vb) {
-  var edge = [va, vb];
-  edge.left = lSite;
-  edge.right = null;
-  edges.push(edge);
-  return edge;
-};
-
-export function setEdgeEnd(edge, lSite, rSite, vertex) {
+export function setEdgeEnd(edge, left, right, vertex) {
   if (!edge[0] && !edge[1]) {
     edge[0] = vertex;
-    edge.left = lSite;
-    edge.right = rSite;
-  } else if (edge.left === rSite) {
+    edge.left = left;
+    edge.right = right;
+  } else if (edge.left === right) {
     edge[1] = vertex;
   } else {
     edge[0] = vertex;
@@ -34,7 +25,7 @@ export function setEdgeEnd(edge, lSite, rSite, vertex) {
 };
 
 // Liang–Barsky line clipping.
-function clipLine(edge, x0, y0, x1, y1) {
+function clippedEdge(edge, x0, y0, x1, y1) {
   var a = edge[0],
       b = edge[1],
       ax = a[0],
@@ -91,22 +82,28 @@ function clipLine(edge, x0, y0, x1, y1) {
     if (r < t1) t1 = r;
   }
 
-  if (t0 > 0) edge[0] = [ax + t0 * dx, ay + t0 * dy];
-  if (t1 < 1) edge[1] = [ax + t1 * dx, ay + t1 * dy];
+  if (!(t0 > 0) && !(t1 < 1)) return edge; // TODO Better check?
+
+  var l = edge.left, r = edge.right;
+  if (t0 > 0) a = [ax + t0 * dx, ay + t0 * dy];
+  if (t1 < 1) b = [ax + t1 * dx, ay + t1 * dy];
+  edge = [a, b];
+  edge.left = l;
+  edge.right = r;
   return edge;
 }
 
-function connectEdge(edge, x0, y0, x1, y1) {
-  var vb = edge[1];
-  if (vb) return true;
+function connectedEdge(edge, x0, y0, x1, y1) {
+  var v1 = edge[1];
+  if (v1) return edge;
 
-  var va = edge[0],
-      lSite = edge.left,
-      rSite = edge.right,
-      lx = lSite[0],
-      ly = lSite[1],
-      rx = rSite[0],
-      ry = rSite[1],
+  var v0 = edge[0],
+      left = edge.left,
+      right = edge.right,
+      lx = left[0],
+      ly = left[1],
+      rx = right[0],
+      ry = right[1],
       fx = (lx + rx) / 2,
       fy = (ly + ry) / 2,
       fm,
@@ -115,55 +112,59 @@ function connectEdge(edge, x0, y0, x1, y1) {
   if (ry === ly) {
     if (fx < x0 || fx >= x1) return;
     if (lx > rx) {
-      if (!va) va = [fx, y0];
-      else if (va[1] >= y1) return;
-      vb = [fx, y1];
+      if (!v0) v0 = [fx, y0];
+      else if (v0[1] >= y1) return;
+      v1 = [fx, y1];
     } else {
-      if (!va) va = [fx, y1];
-      else if (va[1] < y0) return;
-      vb = [fx, y0];
+      if (!v0) v0 = [fx, y1];
+      else if (v0[1] < y0) return;
+      v1 = [fx, y0];
     }
   } else {
     fm = (lx - rx) / (ry - ly);
     fb = fy - fm * fx;
     if (fm < -1 || fm > 1) {
       if (lx > rx) {
-        if (!va) va = [(y0 - fb) / fm, y0];
-        else if (va[1] >= y1) return;
-        vb = [(y1 - fb) / fm, y1];
+        if (!v0) v0 = [(y0 - fb) / fm, y0];
+        else if (v0[1] >= y1) return;
+        v1 = [(y1 - fb) / fm, y1];
       } else {
-        if (!va) va = [(y1 - fb) / fm, y1];
-        else if (va[1] < y0) return;
-        vb = [(y0 - fb) / fm, y0];
+        if (!v0) v0 = [(y1 - fb) / fm, y1];
+        else if (v0[1] < y0) return;
+        v1 = [(y0 - fb) / fm, y0];
       }
     } else {
       if (ly < ry) {
-        if (!va) va = [x0, fm * x0 + fb];
-        else if (va[0] >= x1) return;
-        vb = [x1, fm * x1 + fb];
+        if (!v0) v0 = [x0, fm * x0 + fb];
+        else if (v0[0] >= x1) return;
+        v1 = [x1, fm * x1 + fb];
       } else {
-        if (!va) va = [x1, fm * x1 + fb];
-        else if (va[0] < x0) return;
-        vb = [x0, fm * x0 + fb];
+        if (!v0) v0 = [x1, fm * x1 + fb];
+        else if (v0[0] < x0) return;
+        v1 = [x0, fm * x0 + fb];
       }
     }
   }
 
-  edge[0] = va;
-  edge[1] = vb;
-  return true;
+  edge = [v0, v1];
+  edge.left = left;
+  edge.right = right;
+  return edge;
 }
 
-export function clipEdges(x0, y0, x1, y1) {
+export function clippedEdges(edges, x0, y0, x1, y1) {
   var i = edges.length,
-      e;
+      clippedEdges = new Array(i),
+      edge;
+
   while (i--) {
-    e = edges[i];
-    if (!connectEdge(e, x0, y0, x1, y1)
-        || !clipLine(e, x0, y0, x1, y1)
-        || (Math.abs(e[0][0] - e[1][0]) < epsilon && Math.abs(e[0][1] - e[1][1]) < epsilon)) {
-      e[0] = e[1] = null;
-      edges.splice(i, 1);
+    if ((edge = connectedEdge(edges[i], x0, y0, x1, y1))
+        && (edge = clippedEdge(edge, x0, y0, x1, y1))
+        && (Math.abs(edge[0][0] - edge[1][0]) > epsilon
+            || Math.abs(edge[0][1] - edge[1][1]) > epsilon)) {
+      clippedEdges[i] = edge;
     }
   }
+
+  return clippedEdges;
 };
