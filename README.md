@@ -19,7 +19,7 @@ Voronoi diagrams are not only [visually](http://bl.ocks.org/mbostock/4360892) [a
 If you use NPM, `npm install d3-voronoi`. Otherwise, download the [latest release](https://github.com/d3/d3-voronoi/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a custom build using [Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3js.org](https://d3js.org):
 
 ```html
-<script src="https://d3js.org/d3-voronoi.v0.1.min.js"></script>
+<script src="https://d3js.org/d3-voronoi.v0.2.min.js"></script>
 ```
 
 In a vanilla environment, a `d3_voronoi` global is exported. [Try d3-voronoi in your browser.](https://tonicdev.com/npm/d3-voronoi)
