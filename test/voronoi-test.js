@@ -125,10 +125,10 @@ tape("voronoi.cells(points) has an implicit extent of [[-1e6, -1e6], [1e6, 1e6]]
   test.end();
 });
 
-tape("voronoi.cells(points) returns polygons where polygons[i].point is equal to points[i]", function(test) {
+tape("voronoi.cells(points) returns polygons where polygons[i].data is equal to points[i]", function(test) {
   var points = [[200, 200], [760, 300]];
   voronoi.voronoi().cells(points).forEach(function(cell, i) {
-    test.equal(cell.point, points[i]);
+    test.equal(cell.data, points[i]);
   });
   test.end();
 });

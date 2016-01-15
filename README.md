@@ -30,9 +30,9 @@ In a vanilla environment, a `d3_voronoi` global is exported. [Try d3-voronoi in 
 
 Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi_y)accessors and the default [extent](#voronoi_extent).
 
-<a name="_voronoi" href="#_voronoi">#</a> <i>voronoi</i>(<i>points</i>)
+<a name="_voronoi" href="#_voronoi">#</a> <i>voronoi</i>(<i>data</i>)
 
-Computes the Voronoi diagram for the specified *points*. See [voronoi diagrams](#voronoi-diagrams) for details on the returned data structure. Warning: if any points are coincident or have NaN positions, **the behavior of this method is undefined.** Most likely, invalid polygons will be returned! You must filter invalid points and consolidate coincident points before computing.
+Computes the Voronoi diagram for the specified *data* points. See [voronoi diagrams](#voronoi-diagrams) for details on the returned data structure. Warning: if any points are coincident or have NaN positions, **the behavior of this method is undefined.** Most likely, invalid polygons will be returned! You must filter invalid points and consolidate coincident points before computing.
 
 <a name="voronoi_x" href="#voronoi_x">#</a> <i>voronoi</i>.<b>x</b>([<i>x</i>])
 
@@ -68,7 +68,7 @@ An alias for [*voronoi*.extent](#voronoi_extent) where the minimum *x* and *y* o
 
 Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. For each element *i* in *data*, the polygon *i* represents the corresponding cell in the computed Voronoi diagram.
 
-Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `point` field that refers to the corresponding element in *data*. Polygons are *open* in that they do not contain closing points that duplicate the initial point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
+Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are *open* in that they do not contain closing points that duplicate the initial point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
 
 <a name="voronoi_links" href="#voronoi_links">#</a> <i>voronoi</i>.<b>links</b>(<i>data</i>)
 
@@ -83,59 +83,40 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 
 ### Voronoi Diagrams
 
-TODO Clean this up!
-
 <a name="diagram" href="#diagram">#</a> <i>diagram</i>
 
-The computed Voronoi diagram has the following properties:
+The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the following properties:
 
-* `cells` - an array of [cells](#diagram_cell), one per input point
-* `edges` - an array of [edges](#diagram_edge)
+* `cells` - an array of [cells](#diagram_cell), one per input point.
+* `edges` - an array of [edges](#diagram_edge).
 
 <a name="cell" href="#cell">#</a> <i>cell</i>
 
 Each cell has the following properties:
 
-* `site` - the [site](#site) of the cell’s associated input point
-* `halfedges` - an array of [halfedges](#halfedge) representing the cell’s polygon
+* `site` - the [site](#site) of the cell’s associated input point.
+* `halfedges` - an array of [halfedges](#halfedge) representing the cell’s polygon.
 
 <a name="site" href="#site">#</a> <i>site</i>
 
-Each site has the following properties:
+Each site is an array [*x*, *y*] with two additional properties:
 
-* `x` - an *x*-coordinate
-* `y` - an *y*-coordinate
-* `i` - the site’s index, corresponding to the associated input point
+* `index` - the site’s index, corresponding to the associated input point.
+* `data` - the input data corresponding to this site.
 
 <a name="halfedge" href="#halfedge">#</a> <i>halfedge</i>
 
 Each halfedge has the following properties:
 
-* `site` - the owning [site](#site)
-* `edge` - the shared [edge](#edge)
-* `angle` - the edge angle, used for ordering
-
-Each halfedge also has the following methods:
-
-* `start` - returns the start [vertex](#vertex)
-* `end` - returns the end [vertex](#vertex)
+* `site` - the owning [site](#site).
+* `edge` - the shared [edge](#edge).
+* `angle` - the edge angle, used for ordering.
 
 The start and end vertexes are defined such that halfedges proceed counterclockwise along the cell polygon.
 
 <a name="edge" href="#edge">#</a> <i>edge</i>
 
-Each edge has the following properties:
+Each edge is an array [​[*x0*, *y0*], [*x1*, *y1*]] with two additional properties:
 
-* `l` - the [site](#site) on the left side of the edge
-* `r` - the [site](#site) on the right side of the edge; null if this is a border edge
-* `a` - a [vertex](#vertex) defining one end of the edge
-* `b` - a [vertex](#vertex) defining the other end of the edge; null if this edge is unbounded
-
-<a name="vertex" href="#vertex">#</a> <i>vertex</i>
-
-Each vertex has the following properties:
-
-* `x` - an *x*-coordinate
-* `y` - an *y*-coordinate
-
-TODO replace with [<i>x</i>, <i>y</i>]?
+* `left` - the [site](#site) on the left side of the edge
+* `right` - the [site](#site) on the right side of the edge; null if this is a border edge

@@ -26,12 +26,12 @@ export function attachCircle(arc) {
 
   if (lSite === rSite) return;
 
-  var bx = cSite.x,
-      by = cSite.y,
-      ax = lSite.x - bx,
-      ay = lSite.y - by,
-      cx = rSite.x - bx,
-      cy = rSite.y - by;
+  var bx = cSite[0],
+      by = cSite[1],
+      ax = lSite[0] - bx,
+      ay = lSite[1] - by,
+      cx = rSite[0] - bx,
+      cy = rSite[1] - by;
 
   var d = 2 * (ax * cy - ay * cx);
   if (d >= -epsilon2) return;
@@ -55,7 +55,7 @@ export function attachCircle(arc) {
       node = circles._;
 
   while (node) {
-    if (circle.y < node.y || (circle.y === node.y && circle.x <= node.x)) {
+    if (circle.y < node[1] || (circle.y === node[1] && circle.x <= node[0])) {
       if (node.L) node = node.L;
       else { before = node.P; break; }
     } else {

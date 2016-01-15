@@ -30,7 +30,7 @@ export function removeBeach(beach) {
   var circle = beach.circle,
       x = circle.x,
       y = circle.cy,
-      vertex = {x: x, y: y},
+      vertex = [x, y],
       previous = beach.P,
       next = beach.N,
       disappearing = [beach];
@@ -80,8 +80,8 @@ export function removeBeach(beach) {
 };
 
 export function addBeach(site) {
-  var x = site.x,
-      directrix = site.y,
+  var x = site[0],
+      directrix = site[1],
       lArc,
       rArc,
       dxl,
@@ -139,13 +139,13 @@ export function addBeach(site) {
   detachCircle(rArc);
 
   var lSite = lArc.site,
-      ax = lSite.x,
-      ay = lSite.y,
-      bx = site.x - ax,
-      by = site.y - ay,
+      ax = lSite[0],
+      ay = lSite[1],
+      bx = site[0] - ax,
+      by = site[1] - ay,
       rSite = rArc.site,
-      cx = rSite.x - ax,
-      cy = rSite.y - ay,
+      cx = rSite[0] - ax,
+      cy = rSite[1] - ay,
       d = 2 * (bx * cy - by * cx),
       hb = bx * bx + by * by,
       hc = cx * cx + cy * cy,
@@ -160,8 +160,8 @@ export function addBeach(site) {
 
 function leftBreakPoint(arc, directrix) {
   var site = arc.site,
-      rfocx = site.x,
-      rfocy = site.y,
+      rfocx = site[0],
+      rfocy = site[1],
       pby2 = rfocy - directrix;
 
   if (!pby2) return rfocx;
@@ -170,8 +170,8 @@ function leftBreakPoint(arc, directrix) {
   if (!lArc) return -Infinity;
 
   site = lArc.site;
-  var lfocx = site.x,
-      lfocy = site.y,
+  var lfocx = site[0],
+      lfocy = site[1],
       plby2 = lfocy - directrix;
 
   if (!plby2) return lfocx;
@@ -189,5 +189,5 @@ function rightBreakPoint(arc, directrix) {
   var rArc = arc.N;
   if (rArc) return leftBreakPoint(rArc, directrix);
   var site = arc.site;
-  return site.y === directrix ? site.x : Infinity;
+  return site[1] === directrix ? site[0] : Infinity;
 }

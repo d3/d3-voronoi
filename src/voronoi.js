@@ -2,7 +2,7 @@ import RedBlackTree from "./RedBlackTree";
 import {addBeach, removeBeach} from "./Beach";
 import {clipEdges} from "./Edge";
 import {closeCells} from "./Cell";
-import {descendingAngle} from "./Halfedge";
+import {halfedgeStart, descendingAngle} from "./Halfedge";
 import {firstCircle} from "./Circle";
 
 var nullExtent = [[-1e6, -1e6], [1e6, 1e6]];
@@ -29,12 +29,12 @@ function functor(x) {
 }
 
 function triangleArea(a, b, c) {
-  return (a.x - c.x) * (b.y - a.y) - (a.x - b.x) * (c.y - a.y);
+  return (a[0] - c[0]) * (b[1] - a[1]) - (a[0] - b[0]) * (c[1] - a[1]);
 }
 
 function lexicographic(a, b) {
-  return b.y - a.y
-      || b.x - a.x;
+  return b[1] - a[1]
+      || b[0] - a[0];
 }
 
 function computeVoronoi(sites, extent) {
@@ -50,10 +50,10 @@ function computeVoronoi(sites, extent) {
 
   while (true) {
     circle = firstCircle;
-    if (site && (!circle || site.y < circle.y || (site.y === circle.y && site.x < circle.x))) {
-      if (site.x !== x || site.y !== y) {
+    if (site && (!circle || site[1] < circle.y || (site[1] === circle.y && site[0] < circle.x))) {
+      if (site[0] !== x || site[1] !== y) {
         addBeach(site);
-        x = site.x, y = site.y;
+        x = site[0], y = site[1];
       }
       site = sites.pop();
     } else if (circle) {
@@ -90,11 +90,10 @@ export default function() {
 
   function sites(data) {
     return data.map(function(d, i) {
-      return {
-        x: Math.round(fx(d, i) / epsilon) * epsilon,
-        y: Math.round(fy(d, i) / epsilon) * epsilon,
-        i: i
-      };
+      var s = [Math.round(fx(d, i, data) / epsilon) * epsilon, Math.round(fy(d, i, data) / epsilon) * epsilon];
+      s.index = i;
+      s.data = d;
+      return s;
     });
   }
 
@@ -109,10 +108,10 @@ export default function() {
     computeVoronoi(sites(data), box).cells.forEach(function(cell, i) {
       var halfedges = cell.halfedges,
           site = cell.site,
-          polygon = polygons[i] = halfedges.length ? halfedges.map(function(e) { var s = e.start(); return [s.x, s.y]; })
-              : site.x >= x0 && site.x <= x1 && site.y >= y0 && site.y <= y1 ? [[x0, y1], [x1, y1], [x1, y0], [x0, y0]]
+          polygon = polygons[i] = halfedges.length ? halfedges.map(halfedgeStart)
+              : site[0] >= x0 && site[0] <= x1 && site[1] >= y0 && site[1] <= y1 ? [[x0, y1], [x1, y1], [x1, y0], [x0, y0]]
               : [];
-      polygon.point = data[i];
+      polygon.data = data[i];
     });
 
     return polygons;
@@ -120,11 +119,11 @@ export default function() {
 
   voronoi.links = function(data) {
     return computeVoronoi(sites(data)).edges.filter(function(edge) {
-      return edge.l && edge.r;
+      return edge.left && edge.right;
     }).map(function(edge) {
       return {
-        source: data[edge.l.i],
-        target: data[edge.r.i]
+        source: edge.left.data,
+        target: edge.right.data
       };
     });
   };
@@ -140,15 +139,15 @@ export default function() {
           e0,
           s0,
           e1 = halfedges[m - 1].edge,
-          s1 = e1.l === site ? e1.r : e1.l;
+          s1 = e1.left === site ? e1.right : e1.left;
 
       while (++j < m) {
         e0 = e1;
         s0 = s1;
         e1 = halfedges[j].edge;
-        s1 = e1.l === site ? e1.r : e1.l;
-        if (i < s0.i && i < s1.i && triangleArea(site, s0, s1) < 0) {
-          triangles.push([data[i], data[s0.i], data[s1.i]]);
+        s1 = e1.left === site ? e1.right : e1.left;
+        if (i < s0.index && i < s1.index && triangleArea(site, s0, s1) < 0) {
+          triangles.push([site.data, s0.data, s1.data]);
         }
       }
     });
