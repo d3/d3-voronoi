@@ -143,7 +143,7 @@ tape("voronoi.polygons(points) can handle a two points, one inside and one outsi
 tape("voronoi.polygons(points) can separate two points with a horizontal line", function(test) {
   test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[0, -100], [0, 100]])), [
     [[-infinity, 0], [infinity, 0], [infinity, -infinity], [-infinity, -infinity]],
-    [[infinity, 0], [-infinity, 0], [-infinity, infinity], [infinity, infinity]],
+    [[infinity, 0], [-infinity, 0], [-infinity, infinity], [infinity, infinity]]
   ]);
   test.deepEqual(asArray(voronoi.voronoi().extent(infinite).polygons([[0, 100], [0, -100]])), [
     [[infinity, 0], [-infinity, 0], [-infinity, infinity], [infinity, infinity]],

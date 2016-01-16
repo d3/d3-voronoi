@@ -39,15 +39,13 @@ export function attachCircle(arc) {
   var ha = ax * ax + ay * ay,
       hc = cx * cx + cy * cy,
       x = (cy * ha - ay * hc) / d,
-      y = (ax * hc - cx * ha) / d,
-      cy = y + by;
+      y = (ax * hc - cx * ha) / d;
 
   var circle = circlePool.pop() || new Circle;
   circle.arc = arc;
   circle.site = cSite;
   circle.x = x + bx;
-  circle.y = cy + Math.sqrt(x * x + y * y); // y bottom
-  circle.cy = cy;
+  circle.y = (circle.cy = y + by) + Math.sqrt(x * x + y * y); // y bottom
 
   arc.circle = circle;
 
@@ -66,7 +64,7 @@ export function attachCircle(arc) {
 
   circles.insert(before, circle);
   if (!before) firstCircle = circle;
-};
+}
 
 export function detachCircle(arc) {
   var circle = arc.circle;
@@ -77,4 +75,4 @@ export function detachCircle(arc) {
     RedBlackNode(circle);
     arc.circle = null;
   }
-};
+}

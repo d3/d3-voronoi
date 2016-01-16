@@ -22,7 +22,8 @@
   "scripts": {
     "pretest": "mkdir -p build && node -e 'process.stdout.write(\"var version = \\\"\" + require(\"./package.json\").version + \"\\\"; export * from \\\"../index\\\"; export {version};\");' > build/bundle.js && rollup -f umd -u d3-voronoi -n d3_voronoi -o build/d3-voronoi.js -- build/bundle.js",
     "test": "faucet `find test -name '*-test.js'`",
-    "prepublish": "npm run test && uglifyjs build/d3-voronoi.js -c -m -o build/d3-voronoi.min.js && rm -f build/d3-voronoi.zip && zip -j build/d3-voronoi.zip -- LICENSE README.md build/d3-voronoi.js build/d3-voronoi.min.js"
+    "lint": "eslint index.js src",
+    "prepublish": "npm test && npm run lint && uglifyjs build/d3-voronoi.js -c -m -o build/d3-voronoi.min.js && rm -f build/d3-voronoi.zip && zip -j build/d3-voronoi.zip -- LICENSE README.md build/d3-voronoi.js build/d3-voronoi.min.js"
   },
   "devDependencies": {
     "faucet": "0.0",

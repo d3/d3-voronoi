@@ -2,7 +2,7 @@ import {RedBlackNode} from "./RedBlackTree";
 import {createCell} from "./Cell";
 import {attachCircle, detachCircle} from "./Circle";
 import {createEdge, setEdgeEnd} from "./Edge";
-import {beaches, cells, epsilon} from "./Diagram";
+import {beaches, epsilon} from "./Diagram";
 
 var beachPool = [];
 
@@ -77,7 +77,7 @@ export function removeBeach(beach) {
 
   attachCircle(lArc);
   attachCircle(rArc);
-};
+}
 
 export function addBeach(site) {
   var x = site[0],
@@ -156,7 +156,7 @@ export function addBeach(site) {
   rArc.edge = createEdge(site, rSite, null, vertex);
   attachCircle(lArc);
   attachCircle(rArc);
-};
+}
 
 function leftBreakPoint(arc, directrix) {
   var site = arc.site,

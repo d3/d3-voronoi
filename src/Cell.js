@@ -6,7 +6,7 @@ export function createCell(site) {
     site: site,
     halfedges: []
   };
-};
+}
 
 function cellHalfedgeAngle(cell, edge) {
   var site = cell.site,
@@ -21,24 +21,24 @@ function cellHalfedgeAngle(cell, edge) {
 
 export function cellHalfedgeStart(cell, edge) {
   return edge[+(edge.left !== cell.site)];
-};
+}
 
 export function cellHalfedgeEnd(cell, edge) {
   return edge[+(edge.left === cell.site)];
-};
+}
 
 export function sortCellHalfedges() {
-  for (var i = 0, n = cells.length, cell, halfedges, m; i < n; ++i) {
+  for (var i = 0, n = cells.length, cell, halfedges, j, m; i < n; ++i) {
     if ((cell = cells[i]) && (m = (halfedges = cell.halfedges).length)) {
       var index = new Array(m),
           array = new Array(m);
-      for (var j = 0; j < m; ++j) index[j] = j, array[j] = cellHalfedgeAngle(cell, edges[halfedges[j]]);
+      for (j = 0; j < m; ++j) index[j] = j, array[j] = cellHalfedgeAngle(cell, edges[halfedges[j]]);
       index.sort(function(i, j) { return array[j] - array[i]; });
-      for (var j = 0; j < m; ++j) array[j] = halfedges[index[j]];
-      for (var j = 0; j < m; ++j) halfedges[j] = array[j];
+      for (j = 0; j < m; ++j) array[j] = halfedges[index[j]];
+      for (j = 0; j < m; ++j) halfedges[j] = array[j];
     }
   }
-};
+}
 
 export function clipCells(edges, x0, y0, x1, y1) {
   var iCell = cells.length,
@@ -82,4 +82,4 @@ export function clipCells(edges, x0, y0, x1, y1) {
       }
     }
   }
-};
+}

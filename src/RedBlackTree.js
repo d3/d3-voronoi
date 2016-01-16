@@ -9,7 +9,7 @@ export function RedBlackNode(node) {
   node.R = // right node
   node.P = // previous node
   node.N = null; // next node
-};
+}
 
 RedBlackTree.prototype = {
 

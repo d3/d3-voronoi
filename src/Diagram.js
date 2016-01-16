@@ -67,7 +67,7 @@ export default function Diagram(sites, extent) {
   circles =
   edges =
   cells = null;
-};
+}
 
 Diagram.prototype = {
   polygons: function() {
@@ -102,13 +102,11 @@ Diagram.prototype = {
           halfedges = cell.halfedges,
           j = -1,
           m = halfedges.length,
-          e0,
           s0,
           e1 = edges[halfedges[m - 1]],
           s1 = e1.left === site ? e1.right : e1.left;
 
       while (++j < m) {
-        e0 = e1;
         s0 = s1;
         e1 = edges[halfedges[j]];
         s1 = e1.left === site ? e1.right : e1.left;

@@ -10,13 +10,13 @@ export function createEdge(left, right, v0, v1) {
   cells[left.index].halfedges.push(index);
   cells[right.index].halfedges.push(index);
   return edge;
-};
+}
 
 export function createBorderEdge(left, v0, v1) {
   var edge = [v0, v1];
   edge.left = left;
   return edge;
-};
+}
 
 export function setEdgeEnd(edge, left, right, vertex) {
   if (!edge[0] && !edge[1]) {
@@ -28,7 +28,7 @@ export function setEdgeEnd(edge, left, right, vertex) {
   } else {
     edge[0] = vertex;
   }
-};
+}
 
 // Liang–Barsky line clipping.
 function clippedEdge(edge, x0, y0, x1, y1) {
@@ -42,6 +42,7 @@ function clippedEdge(edge, x0, y0, x1, y1) {
       t1 = 1,
       dx = bx - ax,
       dy = by - ay,
+      l,
       r;
 
   r = x0 - ax;
@@ -90,7 +91,7 @@ function clippedEdge(edge, x0, y0, x1, y1) {
 
   if (!(t0 > 0) && !(t1 < 1)) return edge; // TODO Better check?
 
-  var l = edge.left, r = edge.right;
+  l = edge.left, r = edge.right;
   if (t0 > 0) a = [ax + t0 * dx, ay + t0 * dy];
   if (t1 < 1) b = [ax + t1 * dx, ay + t1 * dy];
   edge = [a, b];
@@ -173,4 +174,4 @@ export function clippedEdges(x0, y0, x1, y1) {
   }
 
   return clippedEdges;
-};
+}
