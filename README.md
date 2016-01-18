@@ -107,7 +107,7 @@ The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the followin
 * `cellEdges` - an array of [edges](#diagram_edge); identical to `edges` if clipping is not applied.
 * `extent` - the associated extent, [​[*x0*, *y0*], [*x1*, *y1*]]; null if clipping is not applied.
 
-<a name="diagram_polygons" href="#diagram_polygons">#</a> <i>diagram</i>.<b>polygons</b>(<i>extent</i>)
+<a name="diagram_polygons" href="#diagram_polygons">#</a> <i>diagram</i>.<b>polygons</b>()
 
 Returns an array of polygons, one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner. Polygons are clipped to the [extent](#voronoi_extent).
 
