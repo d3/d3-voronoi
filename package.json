@@ -1,6 +1,6 @@
 {
   "name": "d3-voronoi",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Compute the Voronoi diagram of a set of two-dimensional points.",
   "keywords": [
     "d3",
@@ -20,13 +20,14 @@
     "url": "https://github.com/d3/d3-voronoi.git"
   },
   "scripts": {
-    "pretest": "mkdir -p build && node -e 'process.stdout.write(\"var version = \\\"\" + require(\"./package.json\").version + \"\\\"; export * from \\\"../index\\\"; export {version};\");' > build/bundle.js && rollup -f umd -u d3-voronoi -n d3_voronoi -o build/d3-voronoi.js -- build/bundle.js",
+    "pretest": "mkdir -p build && node -e 'process.stdout.write(\"var version = \\\"\" + require(\"./package.json\").version + \"\\\"; export * from \\\"../index\\\"; export {version};\");' > build/bundle.js && rollup -f umd -n d3_voronoi -o build/d3-voronoi.js -- build/bundle.js",
     "test": "faucet `find test -name '*-test.js'` && eslint index.js src",
-    "prepublish": "npm test && uglifyjs build/d3-voronoi.js -c -m -o build/d3-voronoi.min.js && rm -f build/d3-voronoi.zip && zip -j build/d3-voronoi.zip -- LICENSE README.md build/d3-voronoi.js build/d3-voronoi.min.js"
+    "prepublish": "npm test && uglifyjs build/d3-voronoi.js -c -m -o build/d3-voronoi.min.js && rm -f build/d3-voronoi.zip && zip -j build/d3-voronoi.zip -- LICENSE README.md build/d3-voronoi.js build/d3-voronoi.min.js",
+    "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git tag -am \"Release $VERSION.\" v${VERSION} && git push --tags && cp build/d3-voronoi.js ../d3.github.com/d3-voronoi.v0.3.js && cp build/d3-voronoi.min.js ../d3.github.com/d3-voronoi.v0.3.min.js && cd ../d3.github.com && git add d3-voronoi.v0.3.js d3-voronoi.v0.3.min.js && git commit -m \"d3-voronoi ${VERSION}\" && git push"
   },
   "devDependencies": {
     "faucet": "0.0",
-    "rollup": "0.24",
+    "rollup": "0.25",
     "tape": "4",
     "uglify-js": "2"
   }
