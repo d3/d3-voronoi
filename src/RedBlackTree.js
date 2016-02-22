@@ -12,6 +12,7 @@ export function RedBlackNode(node) {
 }
 
 RedBlackTree.prototype = {
+  constructor: RedBlackTree,
 
   insert: function(after, node) {
     var parent, grandpa, uncle;
@@ -188,7 +189,6 @@ RedBlackTree.prototype = {
 
     if (node) node.C = false;
   }
-
 };
 
 function RedBlackRotateLeft(tree, node) {

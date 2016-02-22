@@ -70,6 +70,8 @@ export default function Diagram(sites, extent) {
 }
 
 Diagram.prototype = {
+  constructor: Diagram,
+
   polygons: function() {
     var cells = this.cells,
         edges = this.cellEdges,
@@ -93,6 +95,7 @@ Diagram.prototype = {
 
     return polygons;
   },
+
   triangles: function() {
     var triangles = [],
         edges = this.edges;
@@ -118,6 +121,7 @@ Diagram.prototype = {
 
     return triangles;
   },
+
   links: function() {
     return this.edges.filter(function(edge) {
       return edge.right;
