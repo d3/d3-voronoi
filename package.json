@@ -26,6 +26,7 @@
     "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags && cp build/d3-voronoi.js ../d3.github.com/d3-voronoi.v0.3.js && cp build/d3-voronoi.min.js ../d3.github.com/d3-voronoi.v0.3.min.js && cd ../d3.github.com && git add d3-voronoi.v0.3.js d3-voronoi.v0.3.min.js && git commit -m \"d3-voronoi ${VERSION}\" && git push && cd - && zip -j build/d3-voronoi.zip -- LICENSE README.md build/d3-voronoi.js build/d3-voronoi.min.js"
   },
   "devDependencies": {
+    "eslint": "2",
     "json2module": "0.0",
     "rollup": "0.25",
     "tape": "4",
