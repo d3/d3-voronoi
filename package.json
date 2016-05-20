@@ -1,6 +1,6 @@
 {
   "name": "d3-voronoi",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Compute the Voronoi diagram of a set of two-dimensional points.",
   "keywords": [
     "d3",
