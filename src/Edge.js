@@ -94,6 +94,7 @@ function clippedEdge(edge, x0, y0, x1, y1) {
   l = edge.left, r = edge.right;
   if (t0 > 0) a = [ax + t0 * dx, ay + t0 * dy];
   if (t1 < 1) b = [ax + t1 * dx, ay + t1 * dy];
+  cells[l.index].open = cells[r.index].open = true;
   edge = [a, b];
   edge.left = l;
   edge.right = r;
@@ -105,16 +106,18 @@ function connectedEdge(edge, x0, y0, x1, y1) {
   if (v1) return edge;
 
   var v0 = edge[0],
-      left = edge.left,
-      right = edge.right,
-      lx = left[0],
-      ly = left[1],
-      rx = right[0],
-      ry = right[1],
+      l = edge.left,
+      r = edge.right,
+      lx = l[0],
+      ly = l[1],
+      rx = r[0],
+      ry = r[1],
       fx = (lx + rx) / 2,
       fy = (ly + ry) / 2,
       fm,
       fb;
+
+  cells[l.index].open = cells[r.index].open = true;
 
   if (ry === ly) {
     if (fx < x0 || fx >= x1) return;
@@ -154,8 +157,8 @@ function connectedEdge(edge, x0, y0, x1, y1) {
   }
 
   edge = [v0, v1];
-  edge.left = left;
-  edge.right = right;
+  edge.left = l;
+  edge.right = r;
   return edge;
 }
 

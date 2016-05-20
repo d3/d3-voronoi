@@ -9,7 +9,8 @@ export default function() {
 
   function voronoi(data) {
     return new Diagram(data.map(function(d, i) {
-      var s = [Math.round(x(d, i, data) / epsilon) * epsilon, Math.round(y(d, i, data) / epsilon) * epsilon];
+      // var s = [Math.round(x(d, i, data) / epsilon) * epsilon, Math.round(y(d, i, data) / epsilon) * epsilon];
+      var s = [x(d, i, data), y(d, i, data)];
       s.index = i;
       s.data = d;
       return s;
