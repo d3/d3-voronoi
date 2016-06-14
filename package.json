@@ -4,6 +4,7 @@
   "description": "Compute the Voronoi diagram of a set of two-dimensional points.",
   "keywords": [
     "d3",
+    "d3-module",
     "voronoi",
     "delaunay"
   ],
