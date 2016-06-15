@@ -41,7 +41,8 @@ export function sortCellHalfedges() {
 }
 
 export function clipCells(x0, y0, x1, y1) {
-  var iCell = cells.length,
+  var nCells = cells.length,
+      iCell,
       cell,
       site,
       iHalfedge,
@@ -52,9 +53,10 @@ export function clipCells(x0, y0, x1, y1) {
       startY,
       end,
       endX,
-      endY;
+      endY,
+      cover = true;
 
-  while (iCell--) {
+  for (iCell = 0; iCell < nCells; ++iCell) {
     if (cell = cells[iCell]) {
       site = cell.site;
       halfedges = cell.halfedges;
@@ -83,19 +85,41 @@ export function clipCells(x0, y0, x1, y1) {
         }
       }
 
-      // Is this the only site, and is it inside the clip extent?
-      if (!nHalfedges) {
-        if (site[0] >= x0 && site[0] <= x1 && site[1] >= y0 && site[1] <= y1) {
-          var v00 = [x0, y0], v01 = [x0, y1], v11 = [x1, y1], v10 = [x1, y0];
-          halfedges.push(
-            edges.push(createBorderEdge(site, v00, v01)) - 1,
-            edges.push(createBorderEdge(site, v01, v11)) - 1,
-            edges.push(createBorderEdge(site, v11, v10)) - 1,
-            edges.push(createBorderEdge(site, v10, v00)) - 1
-          );
-        } else {
-          delete cells[iCell];
-        }
+      if (nHalfedges) cover = false;
+    }
+  }
+
+  // If there weren’t any edges, have the closest site cover the extent.
+  // It doesn’t matter which corner of the extent we measure!
+  if (cover) {
+    var dx, dy, d2, dc = Infinity;
+
+    for (iCell = 0, cover = null; iCell < nCells; ++iCell) {
+      if (cell = cells[iCell]) {
+        site = cell.site;
+        dx = site[0] - x0;
+        dy = site[1] - y0;
+        d2 = dx * dx + dy * dy;
+        if (d2 < dc) dc = d2, cover = cell;
+      }
+    }
+
+    if (cover) {
+      var v00 = [x0, y0], v01 = [x0, y1], v11 = [x1, y1], v10 = [x1, y0];
+      cover.halfedges.push(
+        edges.push(createBorderEdge(site = cover.site, v00, v01)) - 1,
+        edges.push(createBorderEdge(site, v01, v11)) - 1,
+        edges.push(createBorderEdge(site, v11, v10)) - 1,
+        edges.push(createBorderEdge(site, v10, v00)) - 1
+      );
+    }
+  }
+
+  // Lastly delete any cells with no edges; these were entirely clipped.
+  for (iCell = 0; iCell < nCells; ++iCell) {
+    if (cell = cells[iCell]) {
+      if (!cell.halfedges.length) {
+        delete cells[iCell];
       }
     }
   }

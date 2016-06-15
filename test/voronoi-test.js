@@ -116,22 +116,35 @@ tape("voronoi.polygons(points) returns polygons where polygons[i].data is equal 
   test.end();
 });
 
-tape("voronoi.polygons(points) can handle a single point inside the extent", function(test) {
+tape("voronoi.polygons(points) can handle no points", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([])), []);
+  test.end();
+});
+
+tape("voronoi.polygons(points) can handle a single point", function(test) {
   test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[100, 100]])), [
+    [[0, 0], [0, 500], [960, 500], [960, 0]]
+  ]);
+  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[-100, -100]])), [
     [[0, 0], [0, 500], [960, 500], [960, 0]]
   ]);
   test.end();
 });
 
-tape("voronoi.polygons(points) can handle a single point outside the extent", function(test) {
-  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[-100, -100]])), [
+tape("voronoi.polygons(points) can handle a two points whose cells do not intersect the extent", function(test) {
+  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[480, -200], [480, 100]])), [
+    ,
+    [[0, 0], [0, 500], [960, 500], [960, 0]]
+  ]);
+  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[480, 100], [480, -200]])), [
+    [[0, 0], [0, 500], [960, 500], [960, 0]]
     ,
   ]);
-  test.end();
-});
-
-tape("voronoi.polygons(points) can handle a two points, one inside and one outside", function(test) {
-  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[480, -200], [480, 100]])), [
+  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[480, 1000], [480, -2000]])), [
+    [[0, 0], [0, 500], [960, 500], [960, 0]]
+    ,
+  ]);
+  test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[480, -2000], [480, 1000]])), [
     ,
     [[0, 0], [0, 500], [960, 500], [960, 0]]
   ]);
