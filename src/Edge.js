@@ -31,7 +31,7 @@ export function setEdgeEnd(edge, left, right, vertex) {
 }
 
 // Liang–Barsky line clipping.
-function clippedEdge(edge, x0, y0, x1, y1) {
+function clipEdge(edge, x0, y0, x1, y1) {
   var a = edge[0],
       b = edge[1],
       ax = a[0],
@@ -42,7 +42,6 @@ function clippedEdge(edge, x0, y0, x1, y1) {
       t1 = 1,
       dx = bx - ax,
       dy = by - ay,
-      l,
       r;
 
   r = x0 - ax;
@@ -89,20 +88,16 @@ function clippedEdge(edge, x0, y0, x1, y1) {
     if (r < t1) t1 = r;
   }
 
-  if (!(t0 > 0) && !(t1 < 1)) return edge; // TODO Better check?
+  if (!(t0 > 0) && !(t1 < 1)) return true; // TODO Better check?
 
-  l = edge.left, r = edge.right;
-  if (t0 > 0) a = [ax + t0 * dx, ay + t0 * dy];
-  if (t1 < 1) b = [ax + t1 * dx, ay + t1 * dy];
-  edge = [a, b];
-  edge.left = l;
-  edge.right = r;
-  return edge;
+  if (t0 > 0) edge[0] = [ax + t0 * dx, ay + t0 * dy];
+  if (t1 < 1) edge[1] = [ax + t1 * dx, ay + t1 * dy];
+  return true;
 }
 
-function connectedEdge(edge, x0, y0, x1, y1) {
+function connectEdge(edge, x0, y0, x1, y1) {
   var v1 = edge[1];
-  if (v1) return edge;
+  if (v1) return true;
 
   var v0 = edge[0],
       left = edge.left,
@@ -153,25 +148,21 @@ function connectedEdge(edge, x0, y0, x1, y1) {
     }
   }
 
-  edge = [v0, v1];
-  edge.left = left;
-  edge.right = right;
-  return edge;
+  edge[0] = v0;
+  edge[1] = v1;
+  return true;
 }
 
-export function clippedEdges(x0, y0, x1, y1) {
+export function clipEdges(x0, y0, x1, y1) {
   var i = edges.length,
-      clippedEdges = new Array(i),
       edge;
 
   while (i--) {
-    if ((edge = connectedEdge(edges[i], x0, y0, x1, y1))
-        && (edge = clippedEdge(edge, x0, y0, x1, y1))
-        && (Math.abs(edge[0][0] - edge[1][0]) > epsilon
+    if (!connectEdge(edge = edges[i], x0, y0, x1, y1)
+        || !clipEdge(edge, x0, y0, x1, y1)
+        || !(Math.abs(edge[0][0] - edge[1][0]) > epsilon
             || Math.abs(edge[0][1] - edge[1][1]) > epsilon)) {
-      clippedEdges[i] = edge;
+      delete edges[i];
     }
   }
-
-  return clippedEdges;
 }

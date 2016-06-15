@@ -15,6 +15,7 @@ export default function() {
       return s;
     }), extent);
   }
+
   voronoi.polygons = function(data) {
     return voronoi(data).polygons();
   };

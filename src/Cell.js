@@ -40,9 +40,10 @@ export function sortCellHalfedges() {
   }
 }
 
-export function clipCells(edges, x0, y0, x1, y1) {
+export function clipCells(x0, y0, x1, y1) {
   var iCell = cells.length,
       cell,
+      site,
       iHalfedge,
       halfedges,
       nHalfedges,
@@ -55,6 +56,7 @@ export function clipCells(edges, x0, y0, x1, y1) {
 
   while (iCell--) {
     if (cell = cells[iCell]) {
+      site = cell.site;
       halfedges = cell.halfedges;
       iHalfedge = halfedges.length;
 
@@ -71,13 +73,28 @@ export function clipCells(edges, x0, y0, x1, y1) {
         end = cellHalfedgeEnd(cell, edges[halfedges[iHalfedge]]), endX = end[0], endY = end[1];
         start = cellHalfedgeStart(cell, edges[halfedges[++iHalfedge % nHalfedges]]), startX = start[0], startY = start[1];
         if (Math.abs(endX - startX) > epsilon || Math.abs(endY - startY) > epsilon) {
-          halfedges.splice(iHalfedge, 0, edges.push(createBorderEdge(cell.site, end,
+          halfedges.splice(iHalfedge, 0, edges.push(createBorderEdge(site, end,
               Math.abs(endX - x0) < epsilon && y1 - endY > epsilon ? [x0, Math.abs(startX - x0) < epsilon ? startY : y1]
               : Math.abs(endY - y1) < epsilon && x1 - endX > epsilon ? [Math.abs(startY - y1) < epsilon ? startX : x1, y1]
               : Math.abs(endX - x1) < epsilon && endY - y0 > epsilon ? [x1, Math.abs(startX - x1) < epsilon ? startY : y0]
               : Math.abs(endY - y0) < epsilon && endX - x0 > epsilon ? [Math.abs(startY - y0) < epsilon ? startX : x0, y0]
               : null)) - 1);
           ++nHalfedges;
+        }
+      }
+
+      // Is this the only site, and is it inside the clip extent?
+      if (!nHalfedges) {
+        if (site[0] >= x0 && site[0] <= x1 && site[1] >= y0 && site[1] <= y1) {
+          var v00 = [x0, y0], v01 = [x0, y1], v11 = [x1, y1], v10 = [x1, y0];
+          halfedges.push(
+            edges.push(createBorderEdge(site, v00, v01)) - 1,
+            edges.push(createBorderEdge(site, v01, v11)) - 1,
+            edges.push(createBorderEdge(site, v11, v10)) - 1,
+            edges.push(createBorderEdge(site, v10, v00)) - 1
+          );
+        } else {
+          delete cells[iCell];
         }
       }
     }

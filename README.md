@@ -109,18 +109,16 @@ The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the followin
 
 * `edges` - an array of [edges](#diagram_edge).
 * `cells` - an array of [cells](#diagram_cell), one per input point; a cell may be null for a coincident point.
-* `cellEdges` - an array of [edges](#diagram_edge); identical to `edges` if clipping is not applied.
-* `extent` - the associated extent, [​[*x0*, *y0*], [*x1*, *y1*]]; null if clipping is not applied.
 
 <a name="diagram_polygons" href="#diagram_polygons">#</a> <i>diagram</i>.<b>polygons</b>()
 
-Returns an array of polygons, one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner. Polygons are clipped to the [extent](#voronoi_extent).
+Returns an array of polygons clipped to the [*extent*](#voronoi_extent), one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
 
 If the cell’s site is coincident with an earlier site, the associated polygon is null.
 
 <a name="diagram_triangles" href="#diagram_triangles">#</a> <i>diagram</i>.<b>triangles</b>()
 
-Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*. The clipping extent does not affect the Delaunay triangulation.
+Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*. Since the Delaunay triangulation is computed as the dual of the Voronoi diagram, and the Voronoi diagram is clipped by the [extent](#voronoi_extent), the Delaunay triangulation is likewise affected by the extent.
 
 <a name="diagram_links" href="#diagram_links">#</a> <i>diagram</i>.<b>links</b>()
 
@@ -129,7 +127,7 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 * `source` - the source node, an element in *data*.
 * `target` - the target node, an element in *data*.
 
-The clipping extent does not affect the Delaunay triangulation.
+Since the Delaunay triangulation is computed as the dual of the Voronoi diagram, and the Voronoi diagram is clipped by the [extent](#voronoi_extent), the Delaunay triangulation is likewise affected by the extent.
 
 <a name="cell" href="#cell">#</a> <i>cell</i>
 

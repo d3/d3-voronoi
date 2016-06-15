@@ -23,6 +23,9 @@ tape("voronoi.size([x, y]) is an alias for voronoi.extent([[0, 0], [x, y]])", fu
   v.size([960, 500]);
   test.deepEqual(v.size(), [960, 500]);
   test.deepEqual(v.extent(), [[0, 0], [960, 500]]);
+  test.deepEqual(asArray(v.polygons([[200, 200]])), [
+    [[0, 0], [0, 500], [960, 500], [960, 0]]
+  ]);
   test.deepEqual(asArray(v.polygons([[200, 200], [760, 300]])), [
     [[435.3571428571429, 500], [524.6428571428572, 0], [0, 0], [0, 500]],
     [[524.6428571428572, 0], [435.3571428571429, 500], [960, 500], [960, 0]]
@@ -105,11 +108,6 @@ tape("voronoi.polygons(points) returns open, counterclockwise polygons", functio
   test.end();
 });
 
-tape("voronoi.polygons(points) has no implicit extent", function(test) {
-  test.throws(function() { voronoi.voronoi().polygons([[100, 100]]); }, /TypeError/);
-  test.end();
-});
-
 tape("voronoi.polygons(points) returns polygons where polygons[i].data is equal to points[i]", function(test) {
   var points = [[200, 200], [760, 300]];
   voronoi.voronoi().extent(infinite).polygons(points).forEach(function(cell, i) {
@@ -120,7 +118,7 @@ tape("voronoi.polygons(points) returns polygons where polygons[i].data is equal 
 
 tape("voronoi.polygons(points) can handle a single point inside the extent", function(test) {
   test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[100, 100]])), [
-    [[0, 500], [960, 500], [960, 0], [0, 0]]
+    [[0, 0], [0, 500], [960, 500], [960, 0]]
   ]);
   test.end();
 });
@@ -135,7 +133,7 @@ tape("voronoi.polygons(points) can handle a single point outside the extent", fu
 tape("voronoi.polygons(points) can handle a two points, one inside and one outside", function(test) {
   test.deepEqual(asArray(voronoi.voronoi().size([960, 500]).polygons([[480, -200], [480, 100]])), [
     ,
-    [[0, 500], [960, 500], [960, 0], [0, 0]]
+    [[0, 0], [0, 500], [960, 500], [960, 0]]
   ]);
   test.end();
 });

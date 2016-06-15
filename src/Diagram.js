@@ -1,7 +1,7 @@
 import {addBeach, removeBeach} from "./Beach";
 import {sortCellHalfedges, cellHalfedgeStart, clipCells} from "./Cell";
 import {firstCircle} from "./Circle";
-import {clippedEdges} from "./Edge";
+import {clipEdges} from "./Edge";
 import RedBlackTree from "./RedBlackTree";
 
 export var epsilon = 1e-6;
@@ -49,19 +49,16 @@ export default function Diagram(sites, extent) {
   sortCellHalfedges();
 
   if (extent) {
-    var x0 = extent[0][0],
-        y0 = extent[0][1],
-        x1 = extent[1][0],
-        y1 = extent[1][1];
-    this.extent = [[x0, y0], [x1, y1]];
-    this.cellEdges = clippedEdges(x0, y0, x1, y1);
-    clipCells(this.cellEdges, x0, y0, x1, y1);
-  } else {
-    this.cellEdges = edges;
+    var x0 = +extent[0][0],
+        y0 = +extent[0][1],
+        x1 = +extent[1][0],
+        y1 = +extent[1][1];
+    clipEdges(x0, y0, x1, y1);
+    clipCells(x0, y0, x1, y1);
   }
 
-  this.cells = cells;
   this.edges = edges;
+  this.cells = cells;
 
   beaches =
   circles =
@@ -73,27 +70,13 @@ Diagram.prototype = {
   constructor: Diagram,
 
   polygons: function() {
-    var cells = this.cells,
-        edges = this.cellEdges,
-        extent = this.extent,
-        x0 = extent[0][0],
-        y0 = extent[0][1],
-        x1 = extent[1][0],
-        y1 = extent[1][1],
-        polygons = new Array(cells.length);
+    var edges = this.edges;
 
-    cells.forEach(function(cell, i) {
-      var site = cell.site,
-          halfedges = cell.halfedges,
-          polygon;
-      if (halfedges.length) polygon = halfedges.map(function(index) { return cellHalfedgeStart(cell, edges[index]); });
-      else if (site[0] >= x0 && site[0] <= x1 && site[1] >= y0 && site[1] <= y1) polygon = [[x0, y1], [x1, y1], [x1, y0], [x0, y0]];
-      else return;
-      polygons[i] = polygon;
-      polygon.data = site.data;
+    return this.cells.map(function(cell) {
+      var polygon = cell.halfedges.map(function(i) { return cellHalfedgeStart(cell, edges[i]); });
+      polygon.data = cell.site.data;
+      return polygon;
     });
-
-    return polygons;
   },
 
   triangles: function() {
