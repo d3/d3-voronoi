@@ -134,7 +134,7 @@ Since the Delaunay triangulation is computed as the dual of the Voronoi diagram,
 Each cell in the diagram is an object with the following properties:
 
 * `site` - the [site](#site) of the cell’s associated input point.
-* `halfedges` - an array of indexes into [*diagram*.cellEdges](#diagram) representing the cell’s polygon.
+* `halfedges` - an array of indexes into [*diagram*.edges](#diagram) representing the cell’s polygon.
 
 <a name="site" href="#site">#</a> <i>site</i>
 
