@@ -33,6 +33,12 @@ tape("voronoi.size([x, y]) is an alias for voronoi.extent([[0, 0], [x, y]])", fu
   test.end();
 });
 
+tape("voronoi.size() returns the width and height of the extent", function(test) {
+  var v = voronoi.voronoi().extent([[1, 2], [34, 56]]);
+  test.deepEqual(v.size(), [33, 54]);
+  test.end();
+});
+
 tape("voronoi.extent([[x1, y1], [x2, y2]]) sets the specified extent", function(test) {
   var v = voronoi.voronoi();
   test.equal(v.extent([[1, 2], [3, 4]]), v);
