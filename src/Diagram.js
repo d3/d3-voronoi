@@ -114,5 +114,46 @@ Diagram.prototype = {
         target: edge.right.data
       };
     });
+  },
+  
+  _found: 0,
+  find: function(x, y, radius) {
+    var diagram = this,
+        next = diagram._found,
+        cell = diagram.cells[next] || diagram.cells[next=0],
+        dx = x - cell.site[0],
+        dy = y - cell.site[1],
+        dist = dx * dx + dy * dy,
+        i;
+
+    do {
+      cell = diagram.cells[i=next];
+      next = null;
+      cell.halfedges
+      .forEach(function(e) {
+        var edge = diagram.edges[e];
+        var ea = edge.left;
+        if (ea === cell.site || !ea) {
+          ea = edge.right;
+        }
+        if (ea) {
+          var dx = x - ea[0],
+              dy = y - ea[1],
+              ndist = dx * dx + dy * dy;
+          if (ndist < dist) {
+            dist = ndist;
+            next = ea.index;
+            return;
+          }
+        }
+      });
+    } while (next !== null);
+
+    diagram._found = i;
+    if (!radius || dist < radius * radius) {
+      return cell.site;
+    } else {
+      return null;
+    }
   }
 }

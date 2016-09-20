@@ -102,6 +102,12 @@ voronoi(data).links();
 
 See [*diagram*.links](#diagram_links) for more detail.
 
+
+<a name="voronoi_find" href="#voronoi_find">#</a> <i>voronoi</i>.<b>find</b>(<i>x, y, [radius]</i>) [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L119 "Source")
+
+Returns the nearest site to point *x,y* (within *radius* distance if specified).
+
+
 ### Voronoi Diagrams
 
 <a name="diagram" href="#diagram">#</a> <i>diagram</i> [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js "Source")
