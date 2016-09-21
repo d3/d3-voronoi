@@ -119,7 +119,7 @@ If the cell’s site is coincident with an earlier site, the associated polygon 
 
 <a name="diagram_triangles" href="#diagram_triangles">#</a> <i>diagram</i>.<b>triangles</b>() [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L82 "Source")
 
-Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*. Since the Delaunay triangulation is computed as the dual of the Voronoi diagram, and the Voronoi diagram is clipped by the [extent](#voronoi_extent), the Delaunay triangulation is likewise affected by the extent.
+Returns the Delaunay triangulation of the specified *data* array as an array of triangles. Each triangle is a three-element array of elements from *data*. Since the triangulation is computed as the dual of the Voronoi diagram, and the Voronoi diagram is clipped by the [extent](#voronoi_extent), a subset of the Delaunay triangulation is returned.
 
 <a name="diagram_links" href="#diagram_links">#</a> <i>diagram</i>.<b>links</b>() [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L108 "Source")
 
@@ -128,7 +128,7 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 * `source` - the source node, an element in *data*.
 * `target` - the target node, an element in *data*.
 
-Since the Delaunay triangulation is computed as the dual of the Voronoi diagram, and the Voronoi diagram is clipped by the [extent](#voronoi_extent), the Delaunay triangulation is likewise affected by the extent.
+Since the triangulation is computed as the dual of the Voronoi diagram, and the Voronoi diagram is clipped by the [extent](#voronoi_extent), a subset of the Delaunay links is returned.
 
 <a name="cell" href="#cell">#</a> <i>cell</i>
 
