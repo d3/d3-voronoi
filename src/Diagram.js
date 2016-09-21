@@ -96,7 +96,7 @@ Diagram.prototype = {
         s0 = s1;
         e1 = edges[halfedges[j]];
         s1 = e1.left === site ? e1.right : e1.left;
-        if (i < s0.index && i < s1.index && triangleArea(site, s0, s1) < 0) {
+        if (s0 && s1 && i < s0.index && i < s1.index && triangleArea(site, s0, s1) < 0) {
           triangles.push([site.data, s0.data, s1.data]);
         }
       }
