@@ -34,7 +34,7 @@ var voronoi = d3.voronoi();
 
 <a name="voronoi" href="#voronoi">#</a> d3.<b>voronoi</b>() [<>](https://github.com/d3/d3-voronoi/blob/master/src/voronoi.js "Source")
 
-Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi_y)accessors and a null [extent](#voronoi_extent).
+Creates a new Voronoi layout with default [*x*-](#voronoi_x) and [*y*-](#voronoi_y) accessors and a null [extent](#voronoi_extent).
 
 <a name="_voronoi" href="#_voronoi">#</a> <i>voronoi</i>(<i>data</i>) [<>](https://github.com/d3/d3-voronoi/blob/master/src/voronoi.js#L10 "Source")
 
@@ -62,7 +62,7 @@ function y(d) {
 
 <a name="voronoi_extent" href="#voronoi_extent">#</a> <i>voronoi</i>.<b>extent</b>([<i>extent</i>]) [<>](https://github.com/d3/d3-voronoi/blob/master/src/voronoi.js#L39 "Source")
 
-If *extent* is specified, sets the clip extent of the Voronoi layout to the specified bounds and returns the layout. The *extent* bounds are specified as an array [​[<i>x0</i>, <i>y0</i>], [<i>x1</i>, <i>y1</i>]​], where <i>x0</i> is the left side of the extent, <i>y0</i> is the top, <i>x1</i> is the right and <i>y1</i> is the bottom. If *extent* is not specified, returns the current clip extent which defaults to null. A clip extent is required when using [*voronoi*.polygons](#voronoi_polygons).
+If *extent* is specified, sets the clip extent of the Voronoi layout to the specified bounds and returns the layout. The *extent* bounds are specified as an array \[\[<i>x0</i>, <i>y0</i>\], \[<i>x1</i>, <i>y1</i>\]\], where <i>x0</i> is the left side of the extent, <i>y0</i> is the top, <i>x1</i> is the right and <i>y1</i> is the bottom. If *extent* is not specified, returns the current clip extent which defaults to null. A clip extent is required when using [*voronoi*.polygons](#voronoi_polygons).
 
 <a name="voronoi_size" href="#voronoi_size">#</a> <i>voronoi</i>.<b>size</b>([<i>size</i>]) [<>](https://github.com/d3/d3-voronoi/blob/master/src/voronoi.js#L43 "Source")
 
@@ -102,6 +102,10 @@ voronoi(data).links();
 
 See [*diagram*.links](#diagram_links) for more detail.
 
+<a name="voronoi_find" href="#voronoi_find">#</a> <i>voronoi</i>.<b>find</b>(<i>x, y, [radius]</i>) [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L119 "Source")
+
+Returns the nearest site to point \[*x*, *y*\] (within *radius* distance if specified).
+
 ### Voronoi Diagrams
 
 <a name="diagram" href="#diagram">#</a> <i>diagram</i> [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js "Source")
@@ -113,7 +117,7 @@ The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the followin
 
 <a name="diagram_polygons" href="#diagram_polygons">#</a> <i>diagram</i>.<b>polygons</b>() [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L72 "Source")
 
-Returns an array of polygons clipped to the [*extent*](#voronoi_extent), one for each cell in the diagram. Each polygon is represented as an array of points [*x*, *y*] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
+Returns an array of polygons clipped to the [*extent*](#voronoi_extent), one for each cell in the diagram. Each polygon is represented as an array of points \[*x*, *y*\] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
 
 If the cell’s site is coincident with an earlier site, the associated polygon is null.
 
@@ -139,14 +143,14 @@ Each cell in the diagram is an object with the following properties:
 
 <a name="site" href="#site">#</a> <i>site</i>
 
-Each site in the diagram is an array [*x*, *y*] with two additional properties:
+Each site in the diagram is an array \[*x*, *y*\] with two additional properties:
 
 * `index` - the site’s index, corresponding to the associated input point.
 * `data` - the input data corresponding to this site.
 
 <a name="edge" href="#edge">#</a> <i>edge</i>
 
-Each edge in the diagram is an array [​[*x0*, *y0*], [*x1*, *y1*]] with two additional properties:
+Each edge in the diagram is an array \[\[*x0*, *y0*\], \[*x1*, *y1*\]\] with two additional properties:
 
 * `left` - the [site](#site) on the left side of the edge.
 * `right` - the [site](#site) on the right side of the edge; null for a clipped border edge.

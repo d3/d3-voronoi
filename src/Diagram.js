@@ -114,5 +114,30 @@ Diagram.prototype = {
         target: edge.right.data
       };
     });
+  },
+
+  find: function(x, y, radius) {
+    var that = this,
+        i0, i1 = that._found || 0,
+        cell = that.cells[i1] || that.cells[i1 = 0],
+        dx = x - cell.site[0],
+        dy = y - cell.site[1],
+        d2 = dx * dx + dy * dy;
+
+    do {
+      cell = that.cells[i0 = i1], i1 = null;
+      cell.halfedges.forEach(function(e) {
+        var edge = that.edges[e], v = edge.left;
+        if ((v === cell.site || !v) && !(v = edge.right)) return;
+        var vx = x - v[0],
+            vy = y - v[1],
+            v2 = vx * vx + vy * vy;
+        if (v2 < d2) d2 = v2, i1 = v.index;
+      });
+    } while (i1 !== null);
+
+    that._found = i0;
+
+    return radius == null || d2 <= radius * radius ? cell.site : null;
   }
 }
