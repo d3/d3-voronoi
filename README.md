@@ -102,10 +102,6 @@ voronoi(data).links();
 
 See [*diagram*.links](#diagram_links) for more detail.
 
-<a name="voronoi_find" href="#voronoi_find">#</a> <i>voronoi</i>.<b>find</b>(<i>x, y, [radius]</i>) [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L119 "Source")
-
-Returns the nearest site to point \[*x*, *y*\] (within *radius* distance if specified).
-
 ### Voronoi Diagrams
 
 <a name="diagram" href="#diagram">#</a> <i>diagram</i> [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js "Source")
@@ -133,6 +129,12 @@ Returns the Delaunay triangulation of the specified *data* array as an array of 
 * `target` - the target node, an element in *data*.
 
 Since the triangulation is computed as the dual of the Voronoi diagram, and the Voronoi diagram is clipped by the [extent](#voronoi_extent), a subset of the Delaunay links is returned.
+
+<a name="diagram_find" href="#diagram_find">#</a> <i>diagram</i>.<b>find</b>(<i>x</i>, <i>y</i>, [<i>radius</i>]) [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L119 "Source")
+
+Returns the nearest site to point \[*x*, *y*\]. If *radius* is specified, only sites within *radius* distance are considered.
+
+See Philippe Rivière’s [bl.ocks.org/1b7ddbcd71454d685d1259781968aefc](http://bl.ocks.org/Fil/1b7ddbcd71454d685d1259781968aefc) for an example.
 
 <a name="cell" href="#cell">#</a> <i>cell</i>
 
