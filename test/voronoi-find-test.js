@@ -21,3 +21,9 @@ tape("voronoi(points).find(x, y, 0) returns the site at the position [x, y]", fu
   test.deepEqual(asArray(v([[200, 200], [500, 250], [760, 300]]).find(200, 200, 0)), [200, 200]);
   test.end();
 });
+
+tape("voronoi(points).find(x, y) handles coincident points", function(test) {
+  var v = voronoi.voronoi();
+  test.deepEqual(asArray(v([[0, 0], [0, 0]]).find(0, 0)), [0, 0]);
+  test.end();
+});
