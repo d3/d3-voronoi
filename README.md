@@ -74,7 +74,7 @@ voronoi.extent([[0, 0], size]);
 
 <a name="voronoi_polygons" href="#voronoi_polygons">#</a> <i>voronoi</i>.<b>polygons</b>(<i>data</i>) [<>](https://github.com/d3/d3-voronoi/blob/master/src/voronoi.js#L19 "Source")
 
-Returns an array of polygons, one for each input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. Equivalent to:
+Returns a sparse array of polygons, one for each unique input point in the specified *data* points, corresponding to the cells in the computed Voronoi diagram. Equivalent to:
 
 ```js
 voronoi(data).polygons();
@@ -109,13 +109,15 @@ See [*diagram*.links](#diagram_links) for more detail.
 The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the following properties:
 
 * `edges` - an array of [edges](#diagram_edge).
-* `cells` - an array of [cells](#diagram_cell), one per input point; a cell may be null for a coincident point.
+* `cells` - a sparse array of [cells](#diagram_cell), one for each unique input point.
+
+For each set of coincident input points, one of the points is chosen arbitrarily and assigned the associated cell; the other coincident input points’ entries are missing from the returned sparse array.
 
 <a name="diagram_polygons" href="#diagram_polygons">#</a> <i>diagram</i>.<b>polygons</b>() [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L72 "Source")
 
-Returns an array of polygons clipped to the [*extent*](#voronoi_extent), one for each cell in the diagram. Each polygon is represented as an array of points \[*x*, *y*\] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
+Returns a sparse array of polygons clipped to the [*extent*](#voronoi_extent), one for each cell (each unique input point) in the diagram. Each polygon is represented as an array of points \[*x*, *y*\] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
 
-For each set of coincident sites, one of the sites is chosen arbitrarily and assigned the associated cell’s polygon; the other coincident sites’ polygons are missing from the returned sparse array. (These polygons are undefined.)
+For each set of coincident input points, one of the points is chosen arbitrarily and assigned the associated polygon; the other coincident input points’ entries are missing from the returned sparse array.
 
 <a name="diagram_triangles" href="#diagram_triangles">#</a> <i>diagram</i>.<b>triangles</b>() [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L82 "Source")
 
