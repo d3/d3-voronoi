@@ -115,7 +115,7 @@ The computed Voronoi diagram returned by [*voronoi*](#_voronoi) has the followin
 
 Returns an array of polygons clipped to the [*extent*](#voronoi_extent), one for each cell in the diagram. Each polygon is represented as an array of points \[*x*, *y*\] where *x* and *y* are the point coordinates, and a `data` field that refers to the corresponding element in *data*. Polygons are open: they do not contain a closing point that duplicates the first point; a triangle, for example, is an array of three points. Polygons are also counterclockwise, assuming the origin ⟨0,0⟩ is in the top-left corner.
 
-If the cell’s site is coincident with an earlier site, the associated polygon is null.
+For each set of coincident sites, one of the sites is chosen arbitrarily and assigned the associated cell’s polygon; the other coincident sites’ polygons are missing from the returned sparse array. (These polygons are undefined.)
 
 <a name="diagram_triangles" href="#diagram_triangles">#</a> <i>diagram</i>.<b>triangles</b>() [<>](https://github.com/d3/d3-voronoi/blob/master/src/Diagram.js#L82 "Source")
 
