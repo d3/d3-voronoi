@@ -1,6 +1,8 @@
 # d3-voronoi
 
-> **Deprecation notice**: Consider using the newer [d3-delaunay](https://github.com/d3/d3-delaunay) instead of d3-voronoi. Based on [Delaunator](https://github.com/mapbox/delaunator), d3-delaunay is 5-10× faster than d3-voronoi to construct the Delaunay triangulation or the Voronoi diagram, is more robust numerically, has Canvas rendering built-in, allows traversal of the Delaunay graph, and a variety of other improvements.
+**Deprecation notice**: Consider using the newer [d3-delaunay](https://github.com/d3/d3-delaunay) instead of d3-voronoi. Based on [Delaunator](https://github.com/mapbox/delaunator), d3-delaunay is 5-10× faster than d3-voronoi to construct the Delaunay triangulation or the Voronoi diagram, is more robust numerically, has Canvas rendering built-in, allows traversal of the Delaunay graph, and a variety of other improvements.
+
+---
 
 This module implements [Steven J. Fortune’s algorithm](https://en.wikipedia.org/wiki/Fortune's_algorithm) for computing the [Voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram) or [Delaunay triangulation](https://en.wikipedia.org/wiki/Delaunay_triangulation) of a set of two-dimensional points. This implementation is largely based on [work by Raymond Hill](http://www.raymondhill.net/voronoi/rhill-voronoi.html).
 
